@@ -14,7 +14,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class WeatherActivity : AppCompatActivity() {
 
     val CITY: String = "toronto,ca"
     val API: String = "8118ed6ee68db2debfaaa5a44c832918"
@@ -97,4 +97,3 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-}
