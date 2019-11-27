@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".LoginActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:id="@+id/login_activity"
+    >
+
+    <LinearLayout
+        android:id="@+id/ll_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="#38889c"
+        android:padding="25dp"
+        android:orientation="vertical">
+
+
+
+        <EditText
+            android:id="@+id/et_user_name"
+            android:hint="Username"
+            android:backgroundTint="#FFF"
+            android:textColor="#6bfff7"
+            android:textColorHint="#52afaa"
+            android:paddingBottom="20dp"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/et_password"
+            android:hint="Password"
+            android:textColor="#6bfff7"
+            android:textColorHint="#52afaa"
+            android:paddingBottom="20dp"
+            android:inputType="textPassword"
+            android:backgroundTint="#FFF"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="25dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_reset"
+                android:text="Reset"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/btn_submit"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10pt"
+        android:gravity="center"
+        android:text="System Login"
+        android:textColor="#FFF"
+        android:textSize="25dp"
+        app:fontFamily="@font/lora_bold_italic" />
+</RelativeLayout>
