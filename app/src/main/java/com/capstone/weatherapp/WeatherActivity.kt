@@ -27,7 +27,7 @@ class WeatherActivity : AppCompatActivity() {
 
     }
 
-    inner class weatherTask() : AsyncTask<String, Void, String>() {
+    inner class weatherTask : AsyncTask<String, Void, String>() {
         override fun onPreExecute() {
             super.onPreExecute()
             /* Showing the ProgressBar, Making the main design GONE */
