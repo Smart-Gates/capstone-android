@@ -18,27 +18,26 @@
         android:orientation="vertical">
 
 
-
         <EditText
-            android:id="@+id/et_user_name"
-            android:hint="Username"
+            android:id="@+id/editEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:backgroundTint="#FFF"
-            android:textColor="#6bfff7"
-            android:textColorHint="#52afaa"
+            android:hint="@string/prompt_email"
             android:paddingBottom="20dp"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"/>
+            android:textColor="#6bfff7"
+            android:textColorHint="#52afaa" />
 
         <EditText
-            android:id="@+id/et_password"
-            android:hint="Password"
-            android:textColor="#6bfff7"
-            android:textColorHint="#52afaa"
-            android:paddingBottom="20dp"
+            android:id="@+id/editPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFF"
+            android:hint="@string/prompt_password"
             android:inputType="textPassword"
-            android:backgroundTint="#FFF"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"/>
+            android:paddingBottom="20dp"
+            android:textColor="#6bfff7"
+            android:textColorHint="#52afaa" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,12 +45,7 @@
             android:gravity="center"
             android:padding="25dp"
             android:orientation="horizontal">
-            <Button
-                android:id="@+id/btn_reset"
-                android:text="Reset"
-                android:textAllCaps="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/btn_submit"
                 android:text="Submit"
@@ -62,6 +56,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_system"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -70,5 +65,5 @@
         android:text="System Login"
         android:textColor="#FFF"
         android:textSize="25dp"
-        app:fontFamily="@font/lora_bold_italic" />
+        app:fontFamily="monospace" />
 </RelativeLayout>

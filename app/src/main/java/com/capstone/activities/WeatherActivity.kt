@@ -1,18 +1,31 @@
-package com.capstone.weatherapp
+package com.capstone.activities
 
 
-
+import Weather
+import android.Manifest
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import org.json.JSONObject
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import com.capstone.R
+import com.capstone.api.Retrofit2Client
+import com.google.android.gms.location.LocationServices
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class WeatherActivity : AppCompatActivity() {
 
@@ -23,9 +36,85 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.weather_activity)
 
-        weatherTask().execute()
+
+
+        getWeather()
+        // complete later
+        //weatherTask().execute()
+    }
+
+
+    private fun getWeather() {
+        // make sure app has gps permissions
+        /** Finish check permissions
+        if (!checkPermissions()) {
+        return
+        }**/
+        // default values
+        var lat = "43"
+        var lon = "79"
+        var locate = LocationServices.getFusedLocationProviderClient(this)
+        /**  locate.lastLocation.addOnCompleteListener(this) { task ->
+        var location: Location? = task.result
+        lat = location?.latitude.toString()
+        lon = location?.longitude.toString()
+
+        }*/
+        val sharedPref = this.getSharedPreferences(
+            getString(R.string.shared_preferences_key), Context.MODE_PRIVATE
+        )
+        // exclamation marks is to ignore nullability
+        var auth = sharedPref!!.getString(getString(R.string.access_token), "default")!!
+        auth = "Bearer $auth"
+
+        Retrofit2Client.instance.getWeather(auth, lat, lon)
+            .enqueue(object : Callback<Weather> {
+                override fun onFailure(call: Call<Weather>?, t: Throwable) {
+                    Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Failed to get weather",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onResponse(
+                    call: Call<Weather>?,
+                    response: Response<Weather>
+                ) {
+                    // check to make sure that it was a successful return to server
+                    if (response.code() == 200) {
+                        // if it is not a proper response then show the toast
+                    }
+
+                    Toast.makeText(
+                        applicationContext,
+                        response?.body()?.currently?.temperature.toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
+
+
+                }
+            })
 
     }
+
+    // check the users gps permissions
+    private fun checkPermissions(): Boolean {
+        val permissionState = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        if (permissionState == PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1
+            )
+        }
+        return permissionState == PackageManager.PERMISSION_GRANTED
+    }
+
 
     inner class weatherTask : AsyncTask<String, Void, String>() {
         override fun onPreExecute() {
@@ -61,7 +150,10 @@ class WeatherActivity : AppCompatActivity() {
 
                 val updatedAt: Long = jsonObj.getLong("dt")
                 val updatedAtText =
-                    "Updated at: " + SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH).format(
+                    "Updated at: " + SimpleDateFormat(
+                        "dd/MM/yyyy hh:mm a",
+                        Locale.ENGLISH
+                    ).format(
                         Date(updatedAt * 1000)
                     )
                 val temp = main.getString("temp") + "°C"
