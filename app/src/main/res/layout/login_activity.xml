@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FFF"
             android:hint="@string/prompt_email"
+            android:singleLine="true"
             android:paddingBottom="20dp"
             android:textColor="#6bfff7"
             android:textColorHint="#52afaa" />
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FFF"
             android:hint="@string/prompt_password"
+            android:singleLine="true"
             android:inputType="textPassword"
             android:paddingBottom="20dp"
             android:textColor="#6bfff7"

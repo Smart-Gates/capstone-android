@@ -29,12 +29,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // for now just pass to weather activity, FIX THIS LATER
-        val intent = Intent(this, WeatherActivity::class.java)
-        startActivity(intent)
-
-
-
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
 
