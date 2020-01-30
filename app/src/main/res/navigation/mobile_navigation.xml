@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.capstone.logout.LogoutFragment"
+        android:name="com.capstone.activities.logout.LogoutFragment"
         android:label="@string/title_logout"
         tools:layout="@layout/fragment_logout" />
 </navigation>
