@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "286953190929",
+    "firebase_url": "https://ryeng-capstone.firebaseio.com",
+    "project_id": "ryeng-capstone",
+    "storage_bucket": "ryeng-capstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286953190929:android:0aa3762b8790a2419423b0",
+        "android_client_info": {
+          "package_name": "com.capstone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286953190929-jis7qi9cf0pu1fkrcetl9e8beqttm7cr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0HHB4VXaX2RW7lyb2wmlmekp8PQP_5kE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286953190929-jis7qi9cf0pu1fkrcetl9e8beqttm7cr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
