@@ -1,11 +1,11 @@
 package com.capstone.activities
 
-
 import Weather
 import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.icu.util.UniversalTimeScale.toLong
 import android.location.Location
 import android.os.AsyncTask
 import android.os.Bundle
@@ -23,24 +23,20 @@ import java.util.*
 import com.capstone.R
 import com.capstone.api.Retrofit2Client
 import com.google.android.gms.location.LocationServices
+import kotlinx.android.synthetic.main.weather_activity.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.Instant
+import java.time.ZoneId
 
 class WeatherActivity : AppCompatActivity() {
-
-    val CITY: String = "toronto,ca"
-    val API: String = "8118ed6ee68db2debfaaa5a44c832918"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.weather_activity)
-
-
-
         getWeather()
         // complete later
-        //weatherTask().execute()
     }
 
 
@@ -78,29 +74,59 @@ class WeatherActivity : AppCompatActivity() {
                     ).show()
                 }
 
+
                 override fun onResponse(
                     call: Call<Weather>?,
                     response: Response<Weather>
-                ) {
-                    // check to make sure that it was a successful return to server
+                ) =// check to make sure that it was a successful return to server
+
                     if (response.code() == 200) {
-                        // if it is not a proper response then show the toast
-                    }
 
-                    Toast.makeText(
-                        applicationContext,
-                        response?.body()?.currently?.temperature.toString(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                        //date time conversion from UNIX time to human readable
+                        val unixTime = response.body()?.currently?.time.toString().toLong()
+                        val updatedAt = Date(unixTime * 1000L).toString()
+                        val minTemp =
+                            "Min Temp: " + response.body()?.daily?.data?.get(0)?.temperatureMin.toString() + "°C"
+                        val maxTemp =
+                            "Max Temp: " + response.body()?.daily?.data?.get(0)?.temperatureMax.toString() + "°C"
 
+                        findViewById<ProgressBar>(R.id.loader).visibility = View.VISIBLE
+                        findViewById<RelativeLayout>(R.id.mainContainer).visibility = View.GONE
+                        findViewById<TextView>(R.id.errorText).visibility = View.GONE
+                        findViewById<TextView>(R.id.updated_at).text = updatedAt
+                        findViewById<TextView>(R.id.status).text =
+                            response.body()?.currently?.summary.toString().capitalize()
+                        findViewById<TextView>(R.id.temp).text =
+                            response.body()?.currently?.temperature.toString()
+                        findViewById<TextView>(R.id.temp_min).text = minTemp
+                        findViewById<TextView>(R.id.temp_max).text = maxTemp
+                        findViewById<TextView>(R.id.precipitation).text =
+                            response.body()?.daily?.data?.get(0)?.precipType.toString()
+                        findViewById<TextView>(R.id.cloudCover).text =
+                            response.body()?.currently?.cloudCover.toString()
+                        findViewById<TextView>(R.id.precipProbability).text =
+                            response.body()?.currently?.precipProbability.toString()
+                        findViewById<TextView>(R.id.precipIntensity).text =
+                            response.body()?.currently?.precipIntensity.toString()
+                        findViewById<TextView>(R.id.humidity).text =
+                            response.body()?.currently?.humidity.toString()
+                        findViewById<TextView>(R.id.visible).text =
+                            response.body()?.currently?.visibility.toString()
 
-                }
+                        findViewById<ProgressBar>(R.id.loader).visibility = View.GONE
+                        findViewById<RelativeLayout>(R.id.mainContainer).visibility = View.VISIBLE
+
+                    } else
+                        Toast.makeText(
+                            applicationContext,
+                            "Could not update weather",
+                            Toast.LENGTH_LONG
+                        ).show()
             })
-
     }
 
     // check the users gps permissions
-    private fun checkPermissions(): Boolean {
+    fun checkPermissions(): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -115,84 +141,4 @@ class WeatherActivity : AppCompatActivity() {
         return permissionState == PackageManager.PERMISSION_GRANTED
     }
 
-
-    inner class weatherTask : AsyncTask<String, Void, String>() {
-        override fun onPreExecute() {
-            super.onPreExecute()
-            /* Showing the ProgressBar, Making the main design GONE */
-            findViewById<ProgressBar>(R.id.loader).visibility = View.VISIBLE
-            findViewById<RelativeLayout>(R.id.mainContainer).visibility = View.GONE
-            findViewById<TextView>(R.id.errorText).visibility = View.GONE
-        }
-
-        override fun doInBackground(vararg params: String?): String? {
-            var response: String?
-            try {
-                response =
-                    URL("https://api.openweathermap.org/data/2.5/weather?q=$CITY&units=metric&appid=$API").readText(
-                        Charsets.UTF_8
-                    )
-            } catch (e: Exception) {
-                response = null
-            }
-            return response
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            try {
-                /* Extracting JSON returns from the API */
-                val jsonObj = JSONObject(result)
-                val main = jsonObj.getJSONObject("main")
-                val sys = jsonObj.getJSONObject("sys")
-                val wind = jsonObj.getJSONObject("wind")
-                val weather = jsonObj.getJSONArray("weather").getJSONObject(0)
-
-                val updatedAt: Long = jsonObj.getLong("dt")
-                val updatedAtText =
-                    "Updated at: " + SimpleDateFormat(
-                        "dd/MM/yyyy hh:mm a",
-                        Locale.ENGLISH
-                    ).format(
-                        Date(updatedAt * 1000)
-                    )
-                val temp = main.getString("temp") + "°C"
-                val tempMin = "Min Temp: " + main.getString("temp_min") + "°C"
-                val tempMax = "Max Temp: " + main.getString("temp_max") + "°C"
-                val pressure = main.getString("pressure")
-                val humidity = main.getString("humidity")
-
-                val sunrise: Long = sys.getLong("sunrise")
-                val sunset: Long = sys.getLong("sunset")
-                val windSpeed = wind.getString("speed")
-                val weatherDescription = weather.getString("description")
-
-                val address = jsonObj.getString("name") + ", " + sys.getString("country")
-
-                /* Populating extracted data into our views */
-                findViewById<TextView>(R.id.address).text = address
-                findViewById<TextView>(R.id.updated_at).text = updatedAtText
-                findViewById<TextView>(R.id.status).text = weatherDescription.capitalize()
-                findViewById<TextView>(R.id.temp).text = temp
-                findViewById<TextView>(R.id.temp_min).text = tempMin
-                findViewById<TextView>(R.id.temp_max).text = tempMax
-                findViewById<TextView>(R.id.sunrise).text =
-                    SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunrise * 1000))
-                findViewById<TextView>(R.id.sunset).text =
-                    SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunset * 1000))
-                findViewById<TextView>(R.id.wind).text = windSpeed
-                findViewById<TextView>(R.id.pressure).text = pressure
-                findViewById<TextView>(R.id.humidity).text = humidity
-
-                /* Views populated, Hiding the loader, Showing the main design */
-                findViewById<ProgressBar>(R.id.loader).visibility = View.GONE
-                findViewById<RelativeLayout>(R.id.mainContainer).visibility = View.VISIBLE
-
-            } catch (e: Exception) {
-                findViewById<ProgressBar>(R.id.loader).visibility = View.GONE
-                findViewById<TextView>(R.id.errorText).visibility = View.VISIBLE
-            }
-
-        }
-    }
 }

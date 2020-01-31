@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class Currently {
     @SerializedName("time")
     @Expose
-    var time: Int? = null
+    var time: Long? = null
     @SerializedName("summary")
     @Expose
     var summary: String? = null
