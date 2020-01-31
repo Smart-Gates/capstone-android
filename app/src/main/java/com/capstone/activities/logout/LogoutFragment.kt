@@ -50,6 +50,8 @@ class LogoutFragment : Fragment() {
             startActivity(intent)
         }
 
+
+
         return root
     }
 }

@@ -1,6 +1,7 @@
 package com.capstone.api
 
 import Weather
+import com.capstone.models.EventList
 import com.capstone.models.LoginPayload
 import com.capstone.models.LoginResponse
 import retrofit2.Call
@@ -21,5 +22,10 @@ public interface Api {
         @Header("Authorization") auth: String, @Path("longitude") longitude: String?, @Path("latitude") latitude: String?
     ): Call<Weather>
 
+    @Headers("Headers: Authorization: Bearer {accessToken}")
+    @GET("/api/events")
 
+    fun getEvents(
+        @Header("Authorization") auth: String
+    ): Call<EventList>
 }
