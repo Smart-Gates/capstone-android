@@ -24,7 +24,6 @@ public interface Api {
 
     @Headers("Headers: Authorization: Bearer {accessToken}")
     @GET("/api/events")
-
     fun getEvents(
         @Header("Authorization") auth: String
     ): Call<EventList>
