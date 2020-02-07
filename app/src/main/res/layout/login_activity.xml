@@ -45,15 +45,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="25dp"
+            android:paddingTop="100dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_submit"
-                android:text="Submit"
+                android:textColor="#FFF"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:text="SUBMIT"
                 android:textAllCaps="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:background="#236175"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
         </LinearLayout>
     </LinearLayout>
 

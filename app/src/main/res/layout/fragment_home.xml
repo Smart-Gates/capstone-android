@@ -50,6 +50,13 @@
                         android:id="@+id/weather_bar"
 
                         >
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/btn_weather"
+                            android:background="@android:color/transparent"
+                            >
+                        </Button>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -159,13 +166,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="#236175"
-                    android:id="@+id/meetings_panel"
+                    android:id="@+id/events_panel"
                     android:layout_below="@+id/weather_panel"
 
 
                     >
                     <RelativeLayout
-                        android:id="@+id/meetings_bar"
+                        android:id="@+id/events_bar"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:background="#10303C"
@@ -174,7 +181,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="MEETINGS"
+                            android:text="EVENTS"
                             android:textColor="#FFF"
                             android:textStyle="bold"
                             android:paddingLeft="10dp"
@@ -189,7 +196,7 @@
                     <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/meetings_bar"
+                        android:layout_below="@+id/events_bar"
                         >
 
                         <RelativeLayout
@@ -198,7 +205,7 @@
                             >
 
                             <RelativeLayout
-                                android:id="@+id/meetings_m1"
+                                android:id="@+id/events_m1"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:layout_marginTop="10dp"
@@ -208,7 +215,7 @@
                                 >
 
                                 <TextView
-                                    android:id="@+id/meetings_daynum_m1"
+                                    android:id="@+id/events_daynum_m1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
@@ -220,10 +227,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_month_m1"
+                                    android:id="@+id/events_month_m1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/meetings_daynum_m1"
+                                    android:layout_below="@+id/events_daynum_m1"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="10dp"
@@ -236,7 +243,7 @@
                                     android:id="@+id/meeting_title_m1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m1"
+                                    android:layout_toRightOf="@+id/events_daynum_m1"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="13dp"
@@ -247,10 +254,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_description_m1"
+                                    android:id="@+id/events_description_m1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m1"
+                                    android:layout_toRightOf="@+id/events_daynum_m1"
                                     android:layout_marginLeft="10dp"
                                     android:layout_below="@id/meeting_title_m1"
                                     android:textSize="13dp"
@@ -262,18 +269,18 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/meetings_m2"
+                                android:id="@+id/events_m2"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:background="#FFF"
-                                android:layout_below="@id/meetings_m1"
+                                android:layout_below="@id/events_m1"
                                 >
 
                                 <TextView
-                                    android:id="@+id/meetings_daynum_m2"
+                                    android:id="@+id/events_daynum_m2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
@@ -285,10 +292,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_month_m2"
+                                    android:id="@+id/events_month_m2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/meetings_daynum_m2"
+                                    android:layout_below="@+id/events_daynum_m2"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="10dp"
@@ -298,10 +305,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_title_m2"
+                                    android:id="@+id/events_title_m2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m2"
+                                    android:layout_toRightOf="@+id/events_daynum_m2"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="13dp"
@@ -312,12 +319,12 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_description_m2"
+                                    android:id="@+id/events_description_m2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m2"
+                                    android:layout_toRightOf="@+id/events_daynum_m2"
                                     android:layout_marginLeft="10dp"
-                                    android:layout_below="@id/meeting_title_m2"
+                                    android:layout_below="@id/events_title_m2"
                                     android:textSize="13dp"
                                     android:textColor="#000"
                                     android:text="9 a.m. in Conference Room B"
@@ -327,18 +334,18 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/meetings_m3"
+                                android:id="@+id/events_m3"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:background="#FFF"
-                                android:layout_below="@id/meetings_m2"
+                                android:layout_below="@id/events_m2"
                                 >
 
                                 <TextView
-                                    android:id="@+id/meetings_daynum_m3"
+                                    android:id="@+id/events_daynum_m3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
@@ -350,10 +357,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_month_m3"
+                                    android:id="@+id/events_month_m3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/meetings_daynum_m3"
+                                    android:layout_below="@+id/events_daynum_m3"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="10dp"
@@ -363,10 +370,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_title_m3"
+                                    android:id="@+id/events_title_m3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m3"
+                                    android:layout_toRightOf="@+id/events_daynum_m3"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="13dp"
@@ -377,12 +384,12 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_description_m3"
+                                    android:id="@+id/events_description_m3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m3"
+                                    android:layout_toRightOf="@+id/events_daynum_m3"
                                     android:layout_marginLeft="10dp"
-                                    android:layout_below="@id/meeting_title_m3"
+                                    android:layout_below="@id/events_title_m3"
                                     android:textSize="13dp"
                                     android:textColor="#000"
                                     android:text="9 a.m. in Conference Room B"
@@ -392,18 +399,18 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/meetings_m4"
+                                android:id="@+id/events_m4"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:background="#FFF"
-                                android:layout_below="@id/meetings_m3"
+                                android:layout_below="@id/events_m3"
                                 >
 
                                 <TextView
-                                    android:id="@+id/meetings_daynum_m4"
+                                    android:id="@+id/events_daynum_m4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
@@ -415,10 +422,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_month_m4"
+                                    android:id="@+id/events_month_m4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/meetings_daynum_m4"
+                                    android:layout_below="@+id/events_daynum_m4"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="10dp"
@@ -428,10 +435,10 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_title_m4"
+                                    android:id="@+id/events_title_m4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m4"
+                                    android:layout_toRightOf="@+id/events_daynum_m4"
                                     android:layout_marginLeft="10dp"
                                     android:textStyle="bold"
                                     android:textSize="13dp"
@@ -442,12 +449,12 @@
                                 </TextView>
 
                                 <TextView
-                                    android:id="@+id/meeting_description_m4"
+                                    android:id="@+id/events_description_m4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/meetings_daynum_m4"
+                                    android:layout_toRightOf="@+id/events_daynum_m4"
                                     android:layout_marginLeft="10dp"
-                                    android:layout_below="@id/meeting_title_m4"
+                                    android:layout_below="@id/events_title_m4"
                                     android:textSize="13dp"
                                     android:textColor="#000"
                                     android:text="9 a.m. in Conference Room B"
@@ -467,7 +474,7 @@
                     android:layout_height="250dp"
                     android:background="#236175"
                     android:id="@+id/reminders_panel"
-                    android:layout_below="@+id/meetings_panel"
+                    android:layout_below="@+id/events_panel"
 
 
                     >
