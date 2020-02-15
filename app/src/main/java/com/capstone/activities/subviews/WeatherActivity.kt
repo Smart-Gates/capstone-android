@@ -1,9 +1,8 @@
-package com.capstone.activities
+package com.capstone.activities.subviews
 
 import Weather
 import android.Manifest
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.icu.util.UniversalTimeScale.toLong
 import android.location.Location

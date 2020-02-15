@@ -16,7 +16,7 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".activities.WeatherActivity"
+            android:name=".activities.subviews.WeatherActivity"
             android:label="Weather" />
         <activity
             android:name=".activities.MainActivity"

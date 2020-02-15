@@ -1,18 +1,9 @@
-package com.capstone.activities
+package com.capstone.activities.subviews
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.capstone.api.Retrofit2Client
-import com.capstone.models.LoginPayload
-import kotlinx.android.synthetic.main.login_activity.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import com.capstone.R
 
 class EventActivity : AppCompatActivity() {
