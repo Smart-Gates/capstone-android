@@ -42,13 +42,19 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+
         root.btn_reminder.setOnClickListener {
             val intent = Intent(getActivity(), ReminderActivity::class.java)
             startActivity(intent)
         }
 
+
         populateReminderPanel()
         populateEventPanel()
+
+
+
+
         return root
     }
 
@@ -57,13 +63,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun populateEventPanel() {
-        val panel: RelativeLayout = root.findViewById(R.id.events_panel)
-        val event = RelativeLayout(activity)
-        val size: ViewGroup.LayoutParams = event.layoutParams
-        size.width = MATCH_PARENT
-        size.height = 50
-        event.layoutParams = size
-        event.setBackgroundColor(0x00)
-        panel.addView(event)
+
     }
 }

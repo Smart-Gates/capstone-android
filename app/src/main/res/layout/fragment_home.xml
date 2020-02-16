@@ -193,7 +193,7 @@
                         <Button
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/btn_reminder"
+                            android:id="@+id/btn_event"
                             android:background="@android:color/transparent">
                         </Button>
 
@@ -498,9 +498,16 @@
                             android:textStyle="bold"
                             android:paddingLeft="10dp"
                             android:paddingTop="4dp"
-
                             >
                         </TextView>
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:id="@+id/btn_reminder"
+                            >
+                        </Button>
                     </RelativeLayout>
 
                     <androidx.core.widget.NestedScrollView

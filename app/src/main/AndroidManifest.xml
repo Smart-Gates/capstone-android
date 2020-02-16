@@ -19,6 +19,9 @@
             android:name=".activities.subviews.WeatherActivity"
             android:label="Weather" />
         <activity
+            android:name=".activities.subviews.ReminderActivity"
+            android:label="Reminders"/>
+        <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name">
             <intent-filter>

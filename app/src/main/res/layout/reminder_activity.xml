@@ -11,7 +11,152 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#38889c">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/r1"
+                    android:layout_width="375dp"
+                    android:layout_height="50dp"
+                    android:background="#FFF"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="15dp">
+                    <TextView
+                        android:id="@+id/reminders_title_r1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="UI Design Meeting w/ John Smith"
+                        >
 
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/reminders_description_r1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@id/reminders_title_r1"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="9 a.m. in Conference Room B"
+                        >
+
+                    </TextView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r2"
+                    android:layout_width="375dp"
+                    android:layout_height="50dp"
+                    android:background="#FFF"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="15dp"
+                    android:layout_below="@+id/r1">
+                    <TextView
+                        android:id="@+id/reminders_title_r2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="UI Design Meeting w/ John Smith"
+                        >
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/reminders_description_r2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@id/reminders_title_r2"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="9 a.m. in Conference Room B"
+                        >
+
+                    </TextView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r3"
+                    android:layout_width="375dp"
+                    android:layout_height="50dp"
+                    android:background="#FFF"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="15dp"
+                    android:layout_below="@+id/r2">
+                    <TextView
+                        android:id="@+id/reminders_title_r3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="UI Design Meeting w/ John Smith"
+                        >
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/reminders_description_r3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@id/reminders_title_r3"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="9 a.m. in Conference Room B"
+                        >
+
+                    </TextView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r4"
+                    android:layout_width="375dp"
+                    android:layout_height="50dp"
+                    android:background="#FFF"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="15dp"
+                    android:layout_below="@+id/r3">
+                    <TextView
+                        android:id="@+id/reminders_title_r4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="UI Design Meeting w/ John Smith"
+                        >
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/reminders_description_r4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@id/reminders_title_r4"
+                        android:textSize="13dp"
+                        android:textColor="#000"
+                        android:text="9 a.m. in Conference Room B"
+                        >
+
+                    </TextView>
+                </RelativeLayout>
+        </ScrollView>
     </RelativeLayout>
 </LinearLayout>
