@@ -10,5 +10,5 @@ data class EventPayload (
     val location: String,
     val start_time: Timestamp,
     val end_time: Timestamp,
-    val attendee_id: MutableList<String>
+    val attendee_email: MutableList<String>
     )

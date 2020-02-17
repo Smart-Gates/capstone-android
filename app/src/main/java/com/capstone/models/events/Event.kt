@@ -14,4 +14,5 @@ data class Event(
     val end_time: String,
     val creator: User,
     val attendees: List<User>
+    // val reminder: Reminder // need to implement reminder data object
 )
