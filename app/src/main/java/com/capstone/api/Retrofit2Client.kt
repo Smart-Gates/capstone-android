@@ -6,8 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object Retrofit2Client {
 
-    //private const val baseURL = "http://capstonespringboot-env.zegtxprh2h.us-east-2.elasticbeanstalk.com"
-    private const val baseURL = "http://10.0.2.2:5000"
+    private const val baseURL = "http://capstonespringboot-env.zegtxprh2h.us-east-2.elasticbeanstalk.com"
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val original = chain.request()
