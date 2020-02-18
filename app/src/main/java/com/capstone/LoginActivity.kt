@@ -1,13 +1,17 @@
 package com.capstone
 
+import android.app.Service
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.CapService
+import com.capstone.R
 import com.capstone.api.Retrofit2Client
 import com.capstone.models.LoginPayload
+import com.capstone.models.LoginResponse
 import kotlinx.android.synthetic.main.login_activity.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -78,6 +82,8 @@ class LoginActivity : AppCompatActivity() {
                             true
                         )
                         editor.apply()
+                        // update the Firebase cloud messaging token
+                        updateFCM()
                         // finish returns to main activity
                         finish()
                         return
@@ -93,5 +99,17 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
 
+    }
+
+    fun updateFCM() {
+        val sharedPref = this.getSharedPreferences(
+            getString(R.string.shared_preferences_key), Service.MODE_PRIVATE
+        )
+        // exclamation marks is to ignore nullability
+        var auth = sharedPref!!.getString(getString(R.string.access_token), "")!!
+        auth = "Bearer $auth"
+        val token = sharedPref!!.getString(getString(R.string.fcm_token), "")!!
+
+        CapService().setFCMTokenToServer(token, auth)
     }
 }

@@ -1,4 +1,4 @@
-package com.capstone
+package com.capstone.notifications
 
 import android.app.AlarmManager
 import android.app.NotificationManager
@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.NotificationCompat
+import com.capstone.R
 import com.capstone.activities.MainActivity
 import com.capstone.models.DisplayNotification
 

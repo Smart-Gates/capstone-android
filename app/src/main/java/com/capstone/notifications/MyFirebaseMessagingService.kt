@@ -1,6 +1,5 @@
-package com.capstone
+package com.capstone.notifications
 
-import android.R
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -68,8 +67,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
             val channelId = "Default"
             val builder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.mipmap.sym_def_app_icon)
-               // .setContentTitle(remoteMessage.notification!!.title)
+                .setSmallIcon(com.capstone.R.drawable.ic_stat_r)
+                .setContentTitle(remoteMessage.notification!!.title)
                 .setContentText(remoteMessage.notification!!.body).setAutoCancel(true)
                 .setContentIntent(pendingIntent)
             val manager =

@@ -33,7 +33,7 @@
         </activity>
 
         <service
-            android:name="MyFirebaseMessagingService"
+            android:name=".notifications.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -45,14 +45,14 @@
             android:resource="@color/colorAccent" />
 
         <service
-            android:name="MyFirebaseMessagingService"
+            android:name=".notifications.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <receiver
-            android:name=".NotificationReceiver"
+            android:name=".notifications.NotificationReceiver"
             android:enabled="true"
             android:exported="false">
         </receiver>

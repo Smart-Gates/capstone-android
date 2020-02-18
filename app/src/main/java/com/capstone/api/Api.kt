@@ -1,6 +1,8 @@
 package com.capstone.api
 
 import Weather
+import com.capstone.models.FCMTokenPayload
+import com.capstone.models.FCMTokenResponse
 import com.capstone.models.events.EventsList
 import com.capstone.models.LoginPayload
 import com.capstone.models.LoginResponse
@@ -39,4 +41,12 @@ public interface Api {
         @Header("Authorization") auth: String,
         @Body eventPayload: EventPayload
     ): Call<Event>
+
+
+    @Headers("Content-Type: application/json")
+    @POST("api/notification/token")
+    fun updateFCMToken(
+        @Header("Authorization") auth: String,
+        @Body fcmTokenPayload: FCMTokenPayload
+    ): Call<FCMTokenResponse>
 }

@@ -1,11 +1,13 @@
 package com.capstone
 
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -14,11 +16,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-<<<<<<< HEAD:app/src/main/java/com/capstone/MainActivity.kt
-=======
 import com.capstone.R
 import com.google.android.gms.tasks.OnCompleteListener
->>>>>>> added firebase notifications:app/src/main/java/com/capstone/activities/MainActivity.kt
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
 import android.content.ContentValues.TAG
@@ -28,18 +27,18 @@ import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
 import com.capstone.NotificationReceiver
 import com.capstone.api.Retrofit2Client
-import com.capstone.displayNotificationLater
+import com.capstone.notifications.displayNotificationLater
 import com.capstone.models.DisplayNotification
-import com.capstone.models.events.Event
 import com.capstone.models.events.EventsList
-import com.capstone.sendNotification
+import com.capstone.notifications.sendNotification
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
+import com.google.firebase.iid.FirebaseInstanceId
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.DateFormat.getTimeInstance
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 
@@ -50,23 +49,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // SET firebase messaging
-        FirebaseApp.initializeApp(this);
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new Instance ID token
-                val token = task.result?.token
-
-                // Log and toast
-                Log.d(TAG, token)
-                Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
-            })
-
-
+        initFirebase()
         //check log in status
         val sharedPref = this.getSharedPreferences(
             getString(R.string.shared_preferences_key), Context.MODE_PRIVATE
@@ -76,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         if (!isLoggedIn) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            initFirebase()
         }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -93,13 +77,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
         // create the notification channel
         createChannel()
 
         // get the events
         getEvents()
-
     }
 
     // used to crate a notification channel with the visual and auditory behaviours
@@ -192,15 +174,41 @@ class MainActivity : AppCompatActivity() {
             val diff = alarmT - timeNow
 
             //create new alarms for future
-            if (diff > 0)
-            {
+            if (diff > 0) {
                 Log.d("LOG_TAG_CHECK", "Creating new event @$start in $diff ms")
-                val displayNotification = DisplayNotification(event.id.toInt(), event.title, event.description, alarmT)
+                val displayNotification =
+                    DisplayNotification(event.id.toInt(), event.title, event.description, alarmT)
                 displayNotificationLater(displayNotification)
             }
             Log.d("LOG_TAG_CHECK", "Past Start Time @$start notification not created")
 
         }
     }
-    
+
+    fun initFirebase(){
+        FirebaseApp.initializeApp(this)
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                // Log and toast
+                Log.d("FCM_TOKEN", token!!)
+                val sharedPrefs = getSharedPreferences(
+                    getString(R.string.shared_preferences_key),
+                    Context.MODE_PRIVATE
+                )
+                val editor: SharedPreferences.Editor = sharedPrefs.edit()
+                // store access token
+                editor.putString(
+                    getString(R.string.fcm_token), token
+                )
+                editor.apply()
+            })
+
+    }
 }

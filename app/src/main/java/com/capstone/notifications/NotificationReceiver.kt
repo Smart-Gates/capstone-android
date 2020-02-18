@@ -1,10 +1,11 @@
-package com.capstone
+package com.capstone.notifications
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
+
 // used for the creation of notification alarms to be set in a future date
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
