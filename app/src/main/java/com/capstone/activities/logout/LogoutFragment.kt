@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.capstone.CapService
 import com.capstone.R
 import com.capstone.activities.MainActivity
-import com.google.firebase.iid.FirebaseInstanceId
 
 class LogoutFragment : Fragment() {
 

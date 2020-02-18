@@ -1,5 +1,6 @@
 package com.capstone.models.events
 
-data class EventsList (
+
+data class EventList (
     val content : MutableList<Event>
 )

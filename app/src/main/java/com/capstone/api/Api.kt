@@ -3,11 +3,12 @@ package com.capstone.api
 import Weather
 import com.capstone.models.FCMTokenPayload
 import com.capstone.models.FCMTokenResponse
-import com.capstone.models.events.EventsList
+import com.capstone.models.events.EventList
 import com.capstone.models.LoginPayload
 import com.capstone.models.LoginResponse
 import com.capstone.models.events.Event
 import com.capstone.models.events.EventPayload
+import com.capstone.models.reminders.ReminderList
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -33,7 +34,7 @@ public interface Api {
     @GET("/api/events")
     fun getEvents(
         @Header("Authorization") auth: String
-    ): Call<EventsList>
+    ): Call<EventList>
 
     @Headers("Content-Type: application/json")
     @POST("api/events")
@@ -42,6 +43,11 @@ public interface Api {
         @Body eventPayload: EventPayload
     ): Call<Event>
 
+    @Headers("Content-Type: application/json", "Accept: application/x-spring-data-verbose+json")
+    @GET("/api/reminders")
+    fun getReminders(
+        @Header("Authorization") auth: String
+    ): Call<ReminderList>
 
     @Headers("Content-Type: application/json")
     @POST("api/notification/token")
