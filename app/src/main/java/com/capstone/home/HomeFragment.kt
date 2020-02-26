@@ -23,6 +23,7 @@ import com.capstone.reminders.ReminderViewModel
 import com.capstone.models.events.EventsList
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import com.capstone.activities.subviews.WeatherActivity
+import com.capstone.models.events.Event
 import com.capstone.models.events.EventResponse
 
 
@@ -77,8 +78,11 @@ class HomeFragment : Fragment() {
                     response: Response<EventResponse>
                 ) {
                     if (response.code() == 200) {
-                        
-                        Toast.makeText(activity, "MESSAGE", Toast.LENGTH_LONG).show()
+                        val events : List<Event>? = response.body()?.eventList
+
+                        if (events != null) {
+                            Toast.makeText(activity, events.size, Toast.LENGTH_LONG).show()
+                        }
                         //testEvent()
                     }
                 }

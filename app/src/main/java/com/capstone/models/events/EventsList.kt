@@ -1,6 +1,11 @@
 package com.capstone.models.events
 
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-data class EventsList (
-    val content : List<Event>
-)
+
+class EventsList {
+    @SerializedName("content")
+    @Expose
+    val content : List<Event>? = null
+}

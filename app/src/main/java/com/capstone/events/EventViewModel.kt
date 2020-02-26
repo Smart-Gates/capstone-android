@@ -5,14 +5,14 @@ import com.capstone.models.events.Event
 import com.capstone.models.events.EventsList
 
 class EventViewModel : ViewModel() {
-    private var events : EventsList? = null
+    private var events : List<Event>? = null
 
     fun setEvents (initList: List<Event>?) {
-        events = initList?.let { EventsList(it) }
+        events = initList
     }
 
     fun  getEvent (index: Int): Event? {
-        return events?.content?.get(0)
+        return events?.get(index)
     }
 
 }
