@@ -1,4 +1,4 @@
-package com.capstone.activities
+package com.capstone
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.capstone.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

@@ -1,4 +1,4 @@
-package com.capstone.activities.logout
+package com.capstone.logout
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.capstone.R
-import com.capstone.activities.MainActivity
+import com.capstone.MainActivity
 
 class LogoutFragment : Fragment() {
 

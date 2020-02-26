@@ -1,4 +1,4 @@
-package com.capstone.activities
+package com.capstone
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.login_activity.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.capstone.R
 import com.capstone.models.LoginResponse
 
 

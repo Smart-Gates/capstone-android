@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.capstone.activities.home.HomeFragment"
+        android:name="com.capstone.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.capstone.activities.logout.LogoutFragment"
+        android:name="com.capstone.logout.LogoutFragment"
         android:label="@string/title_logout"
         tools:layout="@layout/fragment_logout" />
 </navigation>

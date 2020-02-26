@@ -1,4 +1,4 @@
-package com.capstone.activities.dashboard
+package com.capstone.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
