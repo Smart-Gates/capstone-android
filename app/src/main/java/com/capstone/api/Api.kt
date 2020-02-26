@@ -6,6 +6,7 @@ import com.capstone.models.LoginPayload
 import com.capstone.models.LoginResponse
 import com.capstone.models.events.Event
 import com.capstone.models.events.EventPayload
+import com.capstone.models.events.EventResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -31,7 +32,7 @@ public interface Api {
     @GET("/api/events")
     fun getEvents(
         @Header("Authorization") auth: String
-    ): Call<EventsList>
+    ): Call<EventResponse>
 
     @Headers("Content-Type: application/json")
     @POST("api/events")
