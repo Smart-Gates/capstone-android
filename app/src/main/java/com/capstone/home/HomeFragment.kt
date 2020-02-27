@@ -47,10 +47,16 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        root.btn_event_add.setOnClickListener {
+
+
+        root.btn_event.setOnClickListener {
             val intent = Intent(activity, AddEvent::class.java)
             startActivity(intent)
+
+
         }
+
+
 
 
         return root
