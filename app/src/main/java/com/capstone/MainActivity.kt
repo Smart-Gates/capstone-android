@@ -107,8 +107,8 @@ class MainActivity : AppCompatActivity() {
         // exclamation marks is to ignore nullability
         var auth = sharedPref!!.getString(getString(R.string.access_token), "default")!!
         auth = "Bearer $auth"
-        CapService().getEvents(auth)
-        CapService().getReminders(auth)
+        CapService().getEvents(auth, applicationContext)
+        CapService().getReminders(auth, applicationContext)
 
     }
 

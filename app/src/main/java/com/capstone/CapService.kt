@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.IBinder
@@ -79,7 +80,7 @@ internal class CapService : Service() {
             })
     }
 
-    fun getEvents(auth: String) {
+    fun getEvents(auth: String, mContext: Context) {
         Retrofit2Client.instance.getEvents(auth)
             .enqueue(object : Callback<EventList> {
                 override fun onFailure(call: Call<EventList>?, t: Throwable) {
@@ -94,13 +95,13 @@ internal class CapService : Service() {
                     // check to make sure that it was a successful return to server
                     if (response.code() == 200) {
                         // begin generating the alarm notifications from the API response
-                        generateEventAlarmNotifications(response.body()!!)
+                        generateEventAlarmNotifications(response?.body()!!, mContext)
                     }
                 }
             })
     }
 
-    fun getReminders(auth: String) {
+    fun getReminders(auth: String, mContext: Context) {
         Retrofit2Client.instance.getReminders(auth)
             .enqueue(object : Callback<ReminderList> {
                 override fun onFailure(call: Call<ReminderList>?, t: Throwable) {
@@ -115,13 +116,13 @@ internal class CapService : Service() {
                     // check to make sure that it was a successful return to server
                     if (response.code() == 200) {
                         // begin generating the alarm notifications from the API response
-                        generateReminderAlarmNotifications(response.body()!!)
+                        generateReminderAlarmNotifications(response?.body()!!, mContext)
                     }
                 }
             })
     }
 
-    private fun generateEventAlarmNotifications(eventsList: EventList) {
+    private fun generateEventAlarmNotifications(eventsList: EventList, mContext: Context) {
 
         eventsList.content.forEach { event ->
             val start = event.start_time
@@ -134,14 +135,14 @@ internal class CapService : Service() {
                 Log.d("LOG_TAG_CHECK", "Creating new event @$start in $diff ms")
                 val displayNotification =
                     DisplayNotification(event.id.toInt(), event.title, event.description, alarmT)
-                displayNotificationLater(displayNotification)
+                displayNotificationLater(displayNotification, mContext)
             }
             Log.d("LOG_TAG_CHECK", "Past Start Time @$start event notification not created")
 
         }
     }
 
-    private fun generateReminderAlarmNotifications(reminderList: ReminderList) {
+    private fun generateReminderAlarmNotifications(reminderList: ReminderList, mContext: Context) {
 
         reminderList.content.forEach { reminder ->
             val start = reminder.start_time
@@ -154,7 +155,7 @@ internal class CapService : Service() {
                 Log.d("LOG_TAG_CHECK", "Creating new reminder @$start in $diff ms")
                 val displayNotification =
                     DisplayNotification(reminder.id.toInt(), reminder.title, reminder.description, alarmT)
-                displayNotificationLater(displayNotification)
+                displayNotificationLater(displayNotification, mContext)
             }
             Log.d("LOG_TAG_CHECK", "Past Start Time @$start reminder notification not created")
 
@@ -175,15 +176,15 @@ internal class CapService : Service() {
     }
 
     private fun displayNotificationLater(
-        displayNotification: DisplayNotification
+        displayNotification: DisplayNotification, mContext: Context
     ) {
-        val notificationManager = getSystemService(
+        val notificationManager = mContext.getSystemService(
             NotificationManager::class.java
         )
 
         notificationManager?.displayNotificationLater(
             displayNotification,
-            applicationContext
+            mContext
         )
     }
 
