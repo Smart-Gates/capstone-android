@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.login_activity.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.capstone.models.LoginResponse
 
 
 class LoginActivity : AppCompatActivity() {
@@ -106,9 +105,9 @@ class LoginActivity : AppCompatActivity() {
             getString(R.string.shared_preferences_key), Service.MODE_PRIVATE
         )
         // exclamation marks is to ignore nullability
-        var auth = sharedPref!!.getString(getString(R.string.access_token), "")!!
+        var auth = sharedPref.getString(getString(R.string.access_token), "")!!
         auth = "Bearer $auth"
-        val token = sharedPref!!.getString(getString(R.string.fcm_token), "")!!
+        val token = sharedPref.getString(getString(R.string.fcm_token), "")!!
 
         CapService().setFCMTokenToServer(token, auth)
     }

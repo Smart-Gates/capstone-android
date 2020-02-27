@@ -94,7 +94,7 @@ internal class CapService : Service() {
                     // check to make sure that it was a successful return to server
                     if (response.code() == 200) {
                         // begin generating the alarm notifications from the API response
-                        generateEventAlarmNotifications(response?.body()!!)
+                        generateEventAlarmNotifications(response.body()!!)
                     }
                 }
             })
@@ -115,7 +115,7 @@ internal class CapService : Service() {
                     // check to make sure that it was a successful return to server
                     if (response.code() == 200) {
                         // begin generating the alarm notifications from the API response
-                        generateReminderAlarmNotifications(response?.body()!!)
+                        generateReminderAlarmNotifications(response.body()!!)
                     }
                 }
             })

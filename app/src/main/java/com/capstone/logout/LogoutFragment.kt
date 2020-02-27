@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.capstone.R
 import com.capstone.MainActivity
+import com.capstone.activities.logout.LogoutViewModel
 
 class LogoutFragment : Fragment() {
 

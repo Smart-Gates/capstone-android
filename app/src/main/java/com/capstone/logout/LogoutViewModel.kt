@@ -1,4 +1,4 @@
-package com.capstone.activities.logout
+package com.capstone.logout
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

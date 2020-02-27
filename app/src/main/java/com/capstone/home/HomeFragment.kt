@@ -18,7 +18,7 @@ import com.capstone.activities.subviews.WeatherActivity
 import com.capstone.api.Retrofit2Client
 import com.capstone.events.AddEvent
 import com.capstone.events.EventViewModel
-import com.capstone.models.events.EventsList
+import com.capstone.models.events.EventList
 import com.capstone.reminders.ReminderViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import retrofit2.Call
@@ -76,9 +76,9 @@ class HomeFragment : Fragment() {
         auth = "Bearer $auth"
 
         Retrofit2Client.instance.getEvents(auth)
-            .enqueue(object : Callback<EventsList> {
+            .enqueue(object : Callback<EventList> {
                 override fun onFailure(
-                    call: Call<EventsList>,
+                    call: Call<EventList>,
                     t: Throwable
                 ) {
                     Toast.makeText(activity, t.message, Toast.LENGTH_LONG).show()
@@ -86,8 +86,8 @@ class HomeFragment : Fragment() {
                 }
 
                 override fun onResponse(
-                    call: Call<EventsList>,
-                    response: Response<EventsList>
+                    call: Call<EventList>,
+                    response: Response<EventList>
                 ) {
                     if (response.code() == 200) {
                         eventViewModel.setEvents(response.body())

@@ -2,12 +2,12 @@ package com.capstone.events
 
 import androidx.lifecycle.ViewModel
 import com.capstone.models.events.Event
-import com.capstone.models.events.EventsList
+import com.capstone.models.events.EventList
 
 class EventViewModel : ViewModel() {
-    private var events : EventsList? = null
+    private var events : EventList? = null
 
-    fun setEvents (initList: EventsList?) {
+    fun setEvents (initList: EventList?) {
         events = initList
     }
 
@@ -15,7 +15,7 @@ class EventViewModel : ViewModel() {
         return events?.content?.get(index)
     }
 
-    fun getEventsList (): EventsList? {
+    fun getEventsList (): EventList? {
         return events
     }
 

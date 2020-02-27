@@ -9,7 +9,7 @@ import android.graphics.BitmapFactory
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.NotificationCompat
 import com.capstone.R
-import com.capstone.activities.MainActivity
+import com.capstone.MainActivity
 import com.capstone.models.DisplayNotification
 
 /** Utility to create and send notifications
