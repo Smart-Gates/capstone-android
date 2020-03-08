@@ -28,6 +28,7 @@ import java.util.*
 
 
 internal class CapService : Service() {
+    private val TAG = "CapService"
 
 
     fun checkPermissions(activity: Activity): Boolean {
@@ -55,7 +56,7 @@ internal class CapService : Service() {
             try {
                 FirebaseInstanceId.getInstance().deleteInstanceId()
             } catch (e: Exception) {
-                Log.e("ERROR", Log.getStackTraceString(e))
+                Log.e(TAG, Log.getStackTraceString(e))
             }
         })
         thread.start()
@@ -63,7 +64,7 @@ internal class CapService : Service() {
 
     fun setFCMTokenToServer(token: String, auth: String) {
         val payload = FCMTokenPayload(token)
-        Log.d("FCM_TOKEN", "token to be sent $token")
+        Log.d(TAG, "token to be sent $token")
 
         Retrofit2Client.instance.updateFCMToken(auth, payload)
             .enqueue(object : Callback<FCMTokenResponse> {
@@ -75,7 +76,7 @@ internal class CapService : Service() {
                     call: Call<FCMTokenResponse>?,
                     response: Response<FCMTokenResponse>
                 ) {
-                    Log.d("FCM_TOKEN", response.body().toString())
+                    Log.d(TAG, response.body().toString())
                 }
             })
     }
@@ -132,7 +133,7 @@ internal class CapService : Service() {
 
             //create new alarms for future
             if (diff > 0) {
-                Log.d("LOG_TAG_CHECK", "Creating new event @$start in $diff ms")
+                Log.d(TAG, "Creating new event @$start in $diff ms")
                 val displayNotification =
                     DisplayNotification(event.id.toInt(), event.title, event.description, alarmT)
                 displayNotificationLater(displayNotification, mContext)
@@ -152,12 +153,12 @@ internal class CapService : Service() {
 
             //create new alarms for future
             if (diff > 0) {
-                Log.d("LOG_TAG_CHECK", "Creating new reminder @$start in $diff ms")
+                Log.d(TAG, "Creating new reminder @$start in $diff ms")
                 val displayNotification =
                     DisplayNotification(reminder.id.toInt(), reminder.title, reminder.description, alarmT)
                 displayNotificationLater(displayNotification, mContext)
             }
-            Log.d("LOG_TAG_CHECK", "Past Start Time @$start reminder notification not created")
+            Log.d(TAG, "Past Start Time @$start reminder notification not created")
 
         }
     }

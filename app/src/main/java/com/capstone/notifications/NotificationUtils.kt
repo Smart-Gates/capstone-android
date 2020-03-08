@@ -36,10 +36,6 @@ fun NotificationManager.sendNotification(
         applicationContext.resources,
         android.R.mipmap.sym_def_app_icon
     )
-    val bigPicStyle = NotificationCompat.BigPictureStyle()
-        .bigPicture(largeImage)
-        .bigLargeIcon(null)
-
 
     val builder = NotificationCompat.Builder(
         applicationContext,
@@ -50,7 +46,6 @@ fun NotificationManager.sendNotification(
         .setContentText(messageBody)
         .setContentIntent(contentPendingIntent)
         .setAutoCancel(true)
-        .setStyle(bigPicStyle)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
     notify(notificationId, builder.build())
 }
