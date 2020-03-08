@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         // SET firebase messaging
         initFirebase()
+        // create the notification channel
+        createChannel()
         //check log in status
         val sharedPref = this.getSharedPreferences(
             getString(R.string.shared_preferences_key), Context.MODE_PRIVATE
@@ -49,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         if (!isLoggedIn) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            initFirebase()
         }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -67,14 +68,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // create the notification channel
-        createChannel()
-
         // get the events/reminders
         getEventReminders()
     }
     // used to crate a notification channel with the visual and auditory behaviours
-    fun createChannel() {
+    private fun createChannel() {
         //create a channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
@@ -124,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                 // Get new Instance ID token
                 val token = task.result?.token
                 // Log and toast
-                Log.d("FCM_TOKEN", token!!)
+                Log.d("FCM_TOKEN", "Refreshed token: "+ token!!)
                 val sharedPrefs = getSharedPreferences(
                     getString(R.string.shared_preferences_key),
                     Context.MODE_PRIVATE

@@ -36,7 +36,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      */
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
-
+       /* val prefs = this.getSharedPreferences(  getString(R.string.shared_preferences_key), MODE_PRIVATE)
+        val auth = prefs.getString("access_token", "")
+        Log.d(TAG, "Refreshed AUTH  token: $auth")*/
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.

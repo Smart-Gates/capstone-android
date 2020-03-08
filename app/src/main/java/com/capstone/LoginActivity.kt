@@ -1,9 +1,11 @@
 package com.capstone
 
 import android.app.Service
+import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +14,9 @@ import com.capstone.R
 import com.capstone.api.Retrofit2Client
 import com.capstone.models.LoginPayload
 import com.capstone.models.LoginResponse
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.login_activity.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -82,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                         )
                         editor.apply()
                         // update the Firebase cloud messaging token
-                        updateFCM()
+                        initFirebase()
                         // finish returns to main activity
                         finish()
                         return
@@ -110,5 +115,33 @@ class LoginActivity : AppCompatActivity() {
         val token = sharedPref.getString(getString(R.string.fcm_token), "")!!
 
         CapService().setFCMTokenToServer(token, auth)
+    }
+
+    private fun initFirebase() {
+        FirebaseApp.initializeApp(this)
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(ContentValues.TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                // Log and toast
+                Log.d("FCM_TOKEN", "Refreshed token: "+ token!!)
+                val sharedPrefs = getSharedPreferences(
+                    getString(R.string.shared_preferences_key),
+                    Context.MODE_PRIVATE
+                )
+                val editor: SharedPreferences.Editor = sharedPrefs.edit()
+                // store access token
+                editor.putString(
+                    getString(R.string.fcm_token), token
+                )
+                editor.apply()
+                updateFCM()
+            })
+
     }
 }
