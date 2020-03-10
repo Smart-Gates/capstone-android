@@ -81,11 +81,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setContentTitle(remoteMessage.notification!!.title)
                 .setContentText(remoteMessage.notification!!.body).setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-            val imageUri = remoteMessage.data["image"]
+            val imageUri = remoteMessage.notification!!.imageUrl
             Log.d(TAG, "Message Notification image: $imageUri")
             if (imageUri != null){
 
-                val bitmap = getBitmapFromURL(imageUri)
+                val bitmap = getBitmapFromURL(imageUri.toString())
                 builder.setStyle(NotificationCompat.BigPictureStyle()
                     .bigPicture(bitmap))
             }
