@@ -4,8 +4,10 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -13,6 +15,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.capstone.MainActivity
 import com.capstone.R
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.io.IOException
@@ -34,6 +39,31 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * the previous token had been compromised. Note that this is called when the InstanceID token
      * is initially generated so this is where you would retrieve the token.
      */
+    fun initFirebase(context: Context) {
+        FirebaseApp.initializeApp(this)
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(ContentValues.TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                // Log and toast
+                Log.d("FCM_TOKEN", "Refreshed token: "+ token!!)
+                val sharedPrefs = context.getSharedPreferences( context.getString(R.string.shared_preferences_key), MODE_PRIVATE)
+
+                val editor: SharedPreferences.Editor = sharedPrefs.edit()
+                // store access token
+                editor.putString(
+                    context.getString(R.string.fcm_token), token
+                )
+                editor.apply()
+            })
+
+    }
+
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
        /* val prefs = this.getSharedPreferences(  getString(R.string.shared_preferences_key), MODE_PRIVATE)

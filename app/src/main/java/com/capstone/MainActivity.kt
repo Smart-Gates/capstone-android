@@ -2,44 +2,27 @@ package com.capstone
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.capstone.CapService
-import com.capstone.R
-import android.content.ContentValues.TAG
-import android.graphics.Color
-import android.os.Build
-import androidx.core.app.AlarmManagerCompat
-import androidx.core.content.ContextCompat
-import com.capstone.notifications.NotificationReceiver
-import com.capstone.api.Retrofit2Client
-import com.capstone.notifications.displayNotificationLater
-import com.capstone.models.DisplayNotification
-import com.capstone.models.events.EventList
-import com.capstone.notifications.sendNotification
-import com.google.android.gms.tasks.OnCompleteListener
+import com.capstone.notifications.MyFirebaseMessagingService
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.FirebaseApp
-import com.google.firebase.iid.FirebaseInstanceId
 
 
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // SET firebase messaging
-        initFirebase()
+        MyFirebaseMessagingService().initFirebase(this)
         // create the notification channel
         createChannel()
         //check log in status
@@ -52,6 +35,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+        // get the events/reminders
+        CapService().getEventReminders(this)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -67,9 +52,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        // get the events/reminders
-        getEventReminders()
     }
     // used to crate a notification channel with the visual and auditory behaviours
     private fun createChannel() {
@@ -96,44 +78,5 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(notificationChannel)
 
         }
-    }
-
-    private fun getEventReminders() {
-        val sharedPref = this.getSharedPreferences(
-            getString(R.string.shared_preferences_key), Context.MODE_PRIVATE
-        )
-        // exclamation marks is to ignore nullability
-        var auth = sharedPref!!.getString(getString(R.string.access_token), "default")!!
-        auth = "Bearer $auth"
-        CapService().getEvents(auth, applicationContext)
-        CapService().getReminders(auth, applicationContext)
-
-    }
-
-    private fun initFirebase() {
-        FirebaseApp.initializeApp(this)
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new Instance ID token
-                val token = task.result?.token
-                // Log and toast
-                Log.d("FCM_TOKEN", "Refreshed token: "+ token!!)
-                val sharedPrefs = getSharedPreferences(
-                    getString(R.string.shared_preferences_key),
-                    Context.MODE_PRIVATE
-                )
-                val editor: SharedPreferences.Editor = sharedPrefs.edit()
-                // store access token
-                editor.putString(
-                    getString(R.string.fcm_token), token
-                )
-                editor.apply()
-            })
-
     }
 }

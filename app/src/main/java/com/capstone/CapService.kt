@@ -189,7 +189,13 @@ internal class CapService : Service() {
         )
     }
 
-
-
+    fun getEventReminders(context: Context) {
+        val prefs = context.getSharedPreferences(  context.getString(R.string.shared_preferences_key), MODE_PRIVATE)
+        var auth = prefs.getString(context.getString(R.string.access_token), "")
+        // exclamation marks is to ignore nullability
+        auth = "Bearer $auth"
+        CapService().getEvents(auth, context)
+        CapService().getReminders(auth, context)
+    }
 }
 
