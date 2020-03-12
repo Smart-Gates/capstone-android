@@ -63,6 +63,9 @@ dependencies {
 
     //messaging
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    // lifecycle view mode
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
 
 }
 
