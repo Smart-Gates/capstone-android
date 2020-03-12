@@ -28,8 +28,6 @@ import java.util.*
 
 
 internal class CapService : Service() {
-    private val TAG = "CapService"
-
 
     fun checkPermissions(activity: Activity): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(
@@ -199,3 +197,4 @@ internal class CapService : Service() {
     }
 }
 
+private const val TAG = "CapService"
