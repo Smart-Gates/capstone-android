@@ -1,8 +1,10 @@
 package com.capstone.events
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.Calendar_view
 import com.capstone.R
 import kotlinx.android.synthetic.main.add_event.*
 
@@ -20,5 +22,8 @@ class AddEvent : AppCompatActivity(){
             val endTime = editEventEndTime.text.toString().trim()
             val attendees = editEventAttendee.text.toString().trim()
         }
+        editEventStartTime.setOnClickListener {
+            val intent = Intent(this, Calendar_view::class.java)
+            startActivity(intent) }
     }
 }
