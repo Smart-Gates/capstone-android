@@ -8,10 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.capstone.R
@@ -19,15 +16,16 @@ import com.capstone.activities.subviews.WeatherActivity
 import com.capstone.api.Retrofit2Client
 import com.capstone.events.AddEvent
 import com.capstone.events.EventViewModel
+import com.capstone.events.ExpandEvent
 import com.capstone.models.events.EventsList
 import com.capstone.models.reminders.RemindersList
+import com.capstone.reminders.AddReminder
 import com.capstone.reminders.ReminderViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+import java.io.Serializable
 
 class HomeFragment : Fragment() {
 
@@ -51,12 +49,23 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        root.btn_event.setOnClickListener {
+        root.btn_event_add.setOnClickListener {
             val intent = Intent(activity, AddEvent::class.java)
             startActivity(intent)
         }
 
+        root.btn_reminder_add.setOnClickListener {
+            val intent = Intent(activity, AddReminder::class.java)
+            startActivity(intent)
+        }
+
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        eventRequest()
+        reminderRequest()
     }
 
     private fun initViewModels () {
@@ -126,6 +135,7 @@ class HomeFragment : Fragment() {
     private fun populateEvent () {
         var pastEvent = RelativeLayout(activity)
         var counter = 0
+        root.event_group.removeAllViews()
 
         eventViewModel.getEventsList()?.content?.forEach { event ->
 
@@ -170,8 +180,27 @@ class HomeFragment : Fragment() {
             description.text = event.description
             descriptionLayout.addView(description)
 
+            var buttonLayout = RelativeLayout(activity)
+            params = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+            )
+
+            var eventButton = Button(activity)
+            eventButton.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            eventButton.setBackgroundColor(Color.TRANSPARENT)
+            eventButton.setOnClickListener {
+
+                val intent = Intent(activity, ExpandEvent::class.java)
+                intent.putExtra("event_object", event as Serializable)
+                startActivity(intent)
+                populateEvent()
+            }
+            buttonLayout.addView(eventButton)
+
             card.addView(titleLayout)
             card.addView(descriptionLayout)
+            card.addView(buttonLayout)
 
             counter++
             pastEvent = card
@@ -179,7 +208,6 @@ class HomeFragment : Fragment() {
 
 
         }
-
     }
 
     private fun populateReminder () {

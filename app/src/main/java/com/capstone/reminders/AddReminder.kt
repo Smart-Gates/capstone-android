@@ -1,26 +1,22 @@
-package com.capstone.events
-
+package com.capstone.reminders
 import android.content.Context
 import android.os.Bundle
-import android.service.voice.AlwaysOnHotwordDetector
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.R
 import com.capstone.api.Retrofit2Client
-import com.capstone.models.events.Event
-import com.capstone.models.events.EventPayload
-import kotlinx.android.synthetic.main.add_event.*
+import com.capstone.models.reminders.Reminder
+import com.capstone.models.reminders.ReminderPayload
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.sql.Timestamp
 
-class AddEvent : AppCompatActivity(){
+class AddReminder : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.add_event)
-        var btnSubmit = findViewById<Button>(R.id.btn_event_submit)
+        setContentView(R.layout.add_reminder)
+        var btnSubmit = findViewById<Button>(R.id.btn_reminder_submit)
 
         btnSubmit.setOnClickListener {
             /*
@@ -34,35 +30,29 @@ class AddEvent : AppCompatActivity(){
 
             val title = "Testing App Event Creation"
             val description = "This is a Test"
-            val location = "Test Town"
             val startTime = "2020-01-28T08:00:00"
-            val endTime = "2020-01-28T08:00:00"
-            val attendees = "john@email.com"
-            eventCreateRequest(title, description, location, startTime, endTime, attendees)
+            reminderCreateRequest(title, description, startTime)
 
         }
     }
 
-    private fun eventCreateRequest(title: String, description: String, location: String,
-                                   startTime: String, endTime: String, attendees: String) {
+    private fun reminderCreateRequest(title: String, description: String, startTime: String) {
         val sharedPrefs = getSharedPreferences(
             getString(R.string.shared_preferences_key),
             Context.MODE_PRIVATE
         )
         var auth = sharedPrefs!!.getString(getString(R.string.access_token), "default")!!
         auth = "Bearer $auth"
-        val attendeeList = attendees.split(",")
-        val payload = EventPayload(title, description, location, startTime, endTime,
-            attendeeList.toTypedArray()
+        val payload = ReminderPayload(title, description,  startTime
         )
 
-        Retrofit2Client.instance.createEvent(auth, payload)
-            .enqueue(object : Callback<Event> {
-                override fun onFailure(call: Call<Event>?, t:Throwable) {
+        Retrofit2Client.instance.createReminder(auth, payload)
+            .enqueue(object : Callback<Reminder> {
+                override fun onFailure(call: Call<Reminder>?, t:Throwable) {
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(call: Call<Event>, response: Response<Event>) {
+                override fun onResponse(call: Call<Reminder>, response: Response<Reminder>) {
                     if (response.code() == 201) {
                         finish()
                         return

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/add_reminder">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#38889c"
+        android:gravity="center">
+        <LinearLayout
+            android:id="@+id/ll_add_reminder_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#38889c"
+            android:padding="25dp"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/editReminderTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_title"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <EditText
+                android:id="@+id/editReminderDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_description"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <EditText
+                android:id="@+id/editReminderStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_start_time"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <Button
+                android:id="@+id/btn_reminder_submit"
+                android:textColor="#FFF"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:text="SUBMIT"
+                android:textAllCaps="false"
+                android:background="#236175"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

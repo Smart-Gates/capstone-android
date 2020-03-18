@@ -11,6 +11,7 @@ import com.capstone.models.events.EventPayload
 import com.capstone.models.reminders.Reminder
 import com.capstone.models.reminders.ReminderPayload
 import com.capstone.models.reminders.RemindersList
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -66,4 +67,19 @@ public interface Api {
         @Header("Authorization") auth: String,
         @Body reminderPayload: ReminderPayload
     ): Call<Reminder>
+
+    @Headers("Content-Type: application/json")
+    @PUT("api/events/{event_id}")
+    fun editEvent(
+        @Header("Authorization") auth: String,
+        @Path("event_id") event_id: String,
+        @Body eventPayload: EventPayload
+    ): Call<Event>
+
+    @Headers("Content-Type: application/json")
+    @DELETE("api/events/{event_id}")
+    fun deleteEvent(
+        @Header("Authorization") auth: String,
+        @Path("event_id") event_id: String
+    ): Call<ResponseBody>
 }

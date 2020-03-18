@@ -80,6 +80,12 @@ class LoginActivity : AppCompatActivity() {
                             getString(R.string.access_token),
                             response.body()?.accessToken
                         )
+
+                        editor.putString(
+                            getString(R.string.user_email),
+                            email
+                        )
+
                         //  put logged in flag
                         editor.putBoolean(
                             getString(R.string.is_logged_in_key),

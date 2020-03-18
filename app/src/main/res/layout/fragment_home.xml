@@ -166,7 +166,7 @@
                 <RelativeLayout
                     android:layout_margin="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="190dp"
                     android:background="#236175"
                     android:id="@+id/events_panel"
                     android:layout_below="@+id/weather_panel"
@@ -193,30 +193,20 @@
                             >
 
                         </TextView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/btn_event"
-                            android:background="@android:color/transparent">
-                        </Button>
+
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:background="#10303C"
-                            android:foreground="@drawable/ic_open_door"
-                            android:layout_alignParentRight="true">
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp"
+                            android:backgroundTint="@android:color/white"
+                            android:foreground="@drawable/ic_plus">
                             <Button
-                                android:layout_width="25dp"
-                                android:layout_height="match_parent"
                                 android:id="@+id/btn_event_add"
-                                android:background="@android:color/transparent"
-                                >
-
-                            </Button>
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:background="?android:attr/selectableItemBackground"/>
                         </RelativeLayout>
 
                     </RelativeLayout>
@@ -242,7 +232,7 @@
                 <RelativeLayout
                     android:layout_margin="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="190dp"
                     android:background="#236175"
                     android:id="@+id/reminders_panel"
                     android:layout_below="@+id/events_panel"
@@ -267,13 +257,19 @@
                             >
                         </TextView>
 
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
-                            android:id="@+id/btn_reminder"
-                            >
-                        </Button>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp"
+                            android:backgroundTint="@android:color/white"
+                            android:foreground="@drawable/ic_plus">
+                            <Button
+                                android:id="@+id/btn_reminder_add"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:background="?android:attr/selectableItemBackground"/>
+                        </RelativeLayout>
                     </RelativeLayout>
 
                     <androidx.core.widget.NestedScrollView

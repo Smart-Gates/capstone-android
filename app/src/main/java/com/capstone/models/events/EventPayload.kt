@@ -1,7 +1,5 @@
 package com.capstone.models.events
 
-import java.sql.Timestamp
-
 /** payload to be sent to the API ON POST
  * */
 data class EventPayload (
@@ -10,7 +8,7 @@ data class EventPayload (
     val location: String,
     val start_time: String,
     val end_time: String,
-    val attendee_id: Array<String>
+    val attendee_email: Array<String>
     ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -18,12 +16,12 @@ data class EventPayload (
 
         other as EventPayload
 
-        if (!attendee_id.contentEquals(other.attendee_id)) return false
+        if (!attendee_email.contentEquals(other.attendee_email)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return attendee_id.contentHashCode()
+        return attendee_email.contentHashCode()
     }
 }
