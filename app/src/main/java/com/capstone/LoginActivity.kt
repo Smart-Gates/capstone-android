@@ -90,6 +90,7 @@ class LoginActivity : AppCompatActivity() {
                         initFirebase()
                         // finish returns to main activity
                         finish()
+
                         return
                     }
                     // if it is not a proper response then show the toast

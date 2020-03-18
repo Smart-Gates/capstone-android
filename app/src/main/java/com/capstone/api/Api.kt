@@ -8,7 +8,9 @@ import com.capstone.models.LoginPayload
 import com.capstone.models.LoginResponse
 import com.capstone.models.events.Event
 import com.capstone.models.events.EventPayload
-import com.capstone.models.reminders.ReminderList
+import com.capstone.models.reminders.Reminder
+import com.capstone.models.reminders.ReminderPayload
+import com.capstone.models.reminders.RemindersList
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -43,6 +45,7 @@ public interface Api {
         @Body eventPayload: EventPayload
     ): Call<Event>
 
+    // the second header for x-spring-data removes the _embedded tag from response
     @Headers("Content-Type: application/json", "Accept: application/x-spring-data-verbose+json")
     @GET("/api/reminders")
     fun getReminders(
@@ -55,4 +58,12 @@ public interface Api {
         @Header("Authorization") auth: String,
         @Body fcmTokenPayload: FCMTokenPayload
     ): Call<FCMTokenResponse>
+    ): Call<RemindersList>
+
+    @Headers("Content-Type: application/json")
+    @POST("api/reminders")
+    fun createReminder(
+        @Header("Authorization") auth: String,
+        @Body reminderPayload: ReminderPayload
+    ): Call<Reminder>
 }
