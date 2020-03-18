@@ -11,7 +11,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -33,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
     private val geofenceRadiusMeters = 100F
     private lateinit var geofencingClient: GeofencingClient
-   // val geofenceList: MutableList<Geofence>
-    var geofenceList: MutableList<Geofence> = ArrayList()
 
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
@@ -42,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         // addGeofences() and removeGeofences().
         PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,6 +59,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+        // Set a geofence based on the Users organization location
+        createGeofenceOrg()
         // get the events/reminders
         CapService().getEventReminders(this)
 
@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
         checkPermissionsGeofencing()
 
         // add the geofence
-        addGeofence(43.657738,  -79.377298, "1")
     }
 
     // used to crate a notification channel with the visual and auditory behaviours
@@ -117,8 +116,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun checkPermissionsGeofencing(){
-        if (locationPermissionApproved()){
+    fun checkPermissionsGeofencing() {
+        if (locationPermissionApproved()) {
             return
         }
         // request permission
@@ -138,7 +137,6 @@ class MainActivity : AppCompatActivity() {
             permissionsArray,
             resultCode
         )
-
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -148,82 +146,69 @@ class MainActivity : AppCompatActivity() {
         val bgPermission =
             if (runningAndroidQOrLater) {
                 PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_BACKGROUND_LOCATION )
+                    this, Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                )
             } else {
                 true
             }
         return fgPermission && bgPermission
     }
+    private fun createGeofenceOrg() {
+        Log.d(TAG, "Add geofence for org")
 
-    private fun addGeofence(lat: Double, long: Double, index: String) {
-        // Set the request ID of the geofence. This is a string to identify this
-        // geofence.
-
-        /*geofenceList.add(
-            Geofence.Builder()
-                .setRequestId(index)
-                .setCircularRegion(lat, long, geofenceRadiusMeters)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                .setExpirationDuration(999999999999999999)
-                .build()
+        val sharedPref = this.getSharedPreferences(
+            getString(R.string.shared_preferences_key), Context.MODE_PRIVATE
         )
-        val geofencingRequest = getGeofencingRequest()
-        removeExisitngAndAddGeofence(geofencingRequest)
-        */
+        val orgAddress = sharedPref.getString(getString(R.string.org_address), null)
+
+        if(orgAddress.equals(null)){
+            Log.d(TAG, "no org address")
+            return
+        }
+        val geoPoint = CapService().getLocationFromAddress(orgAddress!!, applicationContext)
+        Log.d(TAG, "Geopoint is: " + geoPoint.toString())
+
+        addGeofence(geoPoint!!.latitude, geoPoint!!.longitude, "1")
+    }
+
+    // add a geofence given the set values
+    private fun addGeofence(lat: Double, long: Double, index: String) {
+        Log.d(TAG,"Called add geofence")
+
         removeGeofences()
         val geofence = Geofence.Builder()
-            // Set the request ID, string to identify the geofence.
             .setRequestId(index)
-            // Set the circular region of this geofence.
-            .setCircularRegion(lat,long,geofenceRadiusMeters )
-            // Set the expiration duration of the geofence. This geofence gets
-            // automatically removed after this period of time.
+            .setCircularRegion(lat, long, geofenceRadiusMeters)
             .setExpirationDuration(999999999999999999)
-            // Set the transition types of interest. Alerts are only generated for these
-            // transition. We track entry and exit transitions in this sample.
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
             .build()
 
         // Build the geofence request
         val geofencingRequest = GeofencingRequest.Builder()
-            // The INITIAL_TRIGGER_ENTER flag indicates that geofencing service should trigger a
-            // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the device
-            // is already inside that geofence.
             .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-
-            // Add the geofences to be monitored by geofencing service.
             .addGeofence(geofence)
             .build()
+        Log.d(TAG,"Build geofence")
 
-        // First, remove any existing geofences that use our pending intent
+        // remove exisitng geodence
         geofencingClient.removeGeofences(geofencePendingIntent)?.run {
-            // Regardless of success/failure of the removal, add the new geofence
             addOnCompleteListener {
-                // Add the new geofence request with the new geofence
+                Log.d(TAG,"after remove geofence")
+
                 geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent)?.run {
                     addOnSuccessListener {
-                        // Geofences added.
 
-                        Log.e("Add Geofence", geofence.requestId)
-                        // Tell the viewmodel that we've reached the end of the game and
-                        // activated the last "geofence" --- by removing the Geofence.
+                        Log.d(TAG, "Add geofence "+ geofence.requestId)
                     }
                     addOnFailureListener {
-                        // Failed to add geofences.
-
-                        if ((it.message != null)) {
-                            Log.w(TAG, it.message)
-                        }
+                        Log.d(TAG, "failed Add geofence "+geofence.requestId)
                     }
                 }
             }
         }
-
-
-
     }
-    private fun removeGeofences() {
 
+    private fun removeGeofences() {
         geofencingClient.removeGeofences(geofencePendingIntent)?.run {
             addOnSuccessListener {
                 // Geofences removed
@@ -232,48 +217,6 @@ class MainActivity : AppCompatActivity() {
             addOnFailureListener {
                 // Failed to remove geofences
                 Log.d(TAG, "geofence removed fail")
-            }
-        }
-    }
-
-    private fun getGeofencingRequest(): GeofencingRequest {
-        return GeofencingRequest.Builder().apply {
-            setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-            addGeofences(geofenceList)
-        }.build()
-    }
-
-    // removes existing geofences that share the pending request
-    private fun removeExisitngAndAddGeofence(geofencingRequest: GeofencingRequest) {
-        geofencingClient?.removeGeofences(geofencePendingIntent)?.run {
-            addOnSuccessListener {
-                Log.d(TAG,"Geofence removed")
-                Toast.makeText(applicationContext, "Geofence Removed", Toast.LENGTH_SHORT)
-                    .show()
-                geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent)?.run {
-                    addOnSuccessListener {
-                        // Geofences added.
-                        Toast.makeText(this@MainActivity, "Geofence Added",
-                            Toast.LENGTH_SHORT)
-                            .show()
-                        Log.d(TAG, "Geofence Added"+geofencingRequest.toString())
-
-                    }
-                    addOnFailureListener {
-                        // Failed to add geofences.
-                        Log.d(TAG, "Geofence NotAdded")
-
-                    }
-                }
-
-
-
-
-            }
-            addOnFailureListener {
-                Log.d(TAG, "Failed to remove geofence")
-                Toast.makeText(applicationContext,"Failed to remove geofence", Toast.LENGTH_SHORT)
-                    .show()
             }
         }
     }
