@@ -1,11 +1,8 @@
 package com.capstone.api
 
 import Weather
-import com.capstone.models.FCMTokenPayload
-import com.capstone.models.FCMTokenResponse
+import com.capstone.models.*
 import com.capstone.models.events.EventList
-import com.capstone.models.LoginPayload
-import com.capstone.models.LoginResponse
 import com.capstone.models.events.Event
 import com.capstone.models.events.EventPayload
 import com.capstone.models.reminders.ReminderList
@@ -55,4 +52,10 @@ public interface Api {
         @Header("Authorization") auth: String,
         @Body fcmTokenPayload: FCMTokenPayload
     ): Call<FCMTokenResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("api/organizations")
+    fun getUsersOrg(
+        @Header("Authorization") auth: String
+    ): Call<OrganizationResponse>
 }

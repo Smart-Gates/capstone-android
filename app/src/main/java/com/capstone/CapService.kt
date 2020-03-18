@@ -7,6 +7,8 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
@@ -15,10 +17,12 @@ import com.capstone.api.Retrofit2Client
 import com.capstone.models.DisplayNotification
 import com.capstone.models.FCMTokenPayload
 import com.capstone.models.FCMTokenResponse
+import com.capstone.models.OrganizationResponse
 import com.capstone.models.events.EventList
 import com.capstone.models.reminders.ReminderList
 import com.capstone.notifications.displayNotificationLater
 import com.capstone.notifications.sendNotification
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.iid.FirebaseInstanceId
 import retrofit2.Call
 import retrofit2.Callback
@@ -153,7 +157,12 @@ internal class CapService : Service() {
             if (diff > 0) {
                 Log.d(TAG, "Creating new reminder @$start in $diff ms")
                 val displayNotification =
-                    DisplayNotification(reminder.id.toInt(), reminder.title, reminder.description, alarmT)
+                    DisplayNotification(
+                        reminder.id.toInt(),
+                        reminder.title,
+                        reminder.description,
+                        alarmT
+                    )
                 displayNotificationLater(displayNotification, mContext)
             }
             Log.d(TAG, "Past Start Time @$start reminder notification not created")
@@ -188,12 +197,80 @@ internal class CapService : Service() {
     }
 
     fun getEventReminders(context: Context) {
-        val prefs = context.getSharedPreferences(  context.getString(R.string.shared_preferences_key), MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(
+            context.getString(R.string.shared_preferences_key),
+            MODE_PRIVATE
+        )
         var auth = prefs.getString(context.getString(R.string.access_token), "")
         // exclamation marks is to ignore nullability
         auth = "Bearer $auth"
         CapService().getEvents(auth, context)
         CapService().getReminders(auth, context)
+    }
+
+    fun getUserOrganization(context: Context) {
+        Log.d(TAG, "get the user organization")
+
+        var organizationResponse: OrganizationResponse
+
+        var prefs = context.getSharedPreferences(
+            context.getString(R.string.shared_preferences_key),
+            MODE_PRIVATE
+        )
+        var auth = prefs.getString(context.getString(R.string.access_token), "")
+        // exclamation marks is to ignore nullability
+        auth = "Bearer $auth"
+        Log.d(TAG, "user org call: $auth")
+
+        Retrofit2Client.instance.getUsersOrg(auth)
+            .enqueue(object : Callback<OrganizationResponse> {
+                override fun onFailure(call: Call<OrganizationResponse>?, t: Throwable) {
+                    Log.d(TAG, t.toString())
+                    Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(
+                    call: Call<OrganizationResponse>?,
+                    response: Response<OrganizationResponse>
+                ) {
+                    Log.d(TAG, "Successful user org call: "+ response)
+
+                    // check to make sure that it was a successful return to server
+                    if (response.code() == 200) {
+                        // begin generating the alarm notifications from the API response
+                        organizationResponse = response.body()!!
+                        val editor = context.getSharedPreferences(
+                            context.getString(R.string.shared_preferences_key),
+                            MODE_PRIVATE
+                        ).edit()
+
+                        // store access token
+                        editor.putString(
+                            context.getString(R.string.org_address),
+                            response.body()?.street_address + ", " + response.body()?.city + ", " + response.body()?.province_state
+                        ).apply()
+                    }
+                }
+            })
+
+    }
+
+    fun getLocationFromAddress(strAddress: String, context: Context ): GeoPoint? {
+
+        val geocoder = Geocoder(context)
+        val addresses:List<Address>
+        addresses = geocoder.getFromLocationName(strAddress,1)
+
+        if (addresses.isNotEmpty())
+        {
+            val latitude = addresses[0].latitude
+            val longitude = addresses[0].longitude
+            return GeoPoint(
+                 latitude ,
+                 longitude
+             )
+        }
+        return null
     }
 }
 

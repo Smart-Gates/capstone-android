@@ -88,6 +88,8 @@ class LoginActivity : AppCompatActivity() {
                         editor.apply()
                         // update the Firebase cloud messaging token
                         initFirebase()
+                        // get the users org street address and save
+                        CapService().getUserOrganization(applicationContext)
                         // finish returns to main activity
                         finish()
                         return

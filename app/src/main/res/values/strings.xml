@@ -27,6 +27,7 @@
     <string name="notification_channel_name">"default_notification_channel_name"</string>
     <string name="notification_title">"notification_title"</string>
     <string name="fcm_token">"fcm_token_store"</string>
+    <string name="org_address">"org_address"</string>
 
 
 </resources>
