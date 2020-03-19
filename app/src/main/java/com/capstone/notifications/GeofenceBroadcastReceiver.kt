@@ -24,8 +24,10 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         val geofenceTransition = geofencingEvent.geofenceTransition
 
         // Test that the reported transition was of interest.
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-        geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+        val notificationManager = context!!.getSystemService(
+            NotificationManager::class.java
+        )
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
 
             // Get the geofences that were triggered. A single event can trigger
             // multiple geofences.
@@ -39,18 +41,25 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
             )
 
             // Send notification and log the transition details.
-            val notificationManager = context!!.getSystemService(
-                NotificationManager::class.java
-            )
+
 
             notificationManager?.sendNotification(
                 99999999,
-                "Passed Geo Fence",
+                "You've Entered The Gate!",
                 "The Geofence has been passed",
                 context
             )
             Log.i(TAG, geofenceTransitionDetails.toString())
-        } else {
+        } else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
+            notificationManager?.sendNotification(
+                99999999,
+                "You've Left The Gate!",
+                "Remember your: keys, ID card, and bag",
+                context
+            )
+        }
+
+        else {
             Log.e(TAG, "Geofence transition is invalid")
         }
     }
