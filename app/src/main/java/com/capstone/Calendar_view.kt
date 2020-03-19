@@ -29,7 +29,7 @@ class Calendar_view : AppCompatActivity() {
         starttime_text.setOnClickListener {
             val start_time= TimePickerDialog(this,
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute -> select_stime.setText(""+hourOfDay+":"+minute)},c.get(
-                    Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true )
+                    Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),false )
            start_time.show()
         }
 
