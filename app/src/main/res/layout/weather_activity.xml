@@ -34,9 +34,9 @@
                 android:id="@+id/updated_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="24 ,January, 2020, 20:08 PM"
-                android:textColor="#FFF"
-                android:textSize="14dp" />
+                android:text="19 March 2020, 20:08 PM"
+                android:textSize="14dp"
+                android:textColor="#FFF"/>
         </LinearLayout>
 
 

@@ -46,6 +46,21 @@ public interface Api {
         @Body eventPayload: EventPayload
     ): Call<Event>
 
+    @Headers("Content-Type: application/json")
+    @PUT("api/events/{event_id}")
+    fun editEvent(
+        @Header("Authorization") auth: String,
+        @Path("event_id") event_id: String,
+        @Body eventPayload: EventPayload
+    ): Call<Event>
+
+    @Headers("Content-Type: application/json")
+    @DELETE("api/events/{event_id}")
+    fun deleteEvent(
+        @Header("Authorization") auth: String,
+        @Path("event_id") event_id: String
+    ): Call<ResponseBody>
+
     // the second header for x-spring-data removes the _embedded tag from response
     @Headers("Content-Type: application/json", "Accept: application/x-spring-data-verbose+json")
     @GET("/api/reminders")
@@ -69,17 +84,18 @@ public interface Api {
     ): Call<Reminder>
 
     @Headers("Content-Type: application/json")
-    @PUT("api/events/{event_id}")
-    fun editEvent(
+    @PUT("api/events/{reminder_id}")
+    fun editReminder(
         @Header("Authorization") auth: String,
-        @Path("event_id") event_id: String,
-        @Body eventPayload: EventPayload
-    ): Call<Event>
+        @Path("reminder_id") event_id: String,
+        @Body reminderPayload: ReminderPayload
+    ): Call<Reminder>
 
     @Headers("Content-Type: application/json")
-    @DELETE("api/events/{event_id}")
-    fun deleteEvent(
+    @DELETE("api/events/{reminder_id}")
+    fun deleteReminder(
         @Header("Authorization") auth: String,
-        @Path("event_id") event_id: String
+        @Path("reminder_id") event_id: String
     ): Call<ResponseBody>
+
 }
