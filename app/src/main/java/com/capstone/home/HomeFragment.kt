@@ -64,6 +64,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        root.event_group.removeAllViews()
         eventRequest()
         reminderRequest()
     }

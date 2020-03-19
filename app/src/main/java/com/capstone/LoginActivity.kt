@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
 
                         editor.putString(
                             getString(R.string.user_email),
-                            email
+                            response.body()?.user?.email
                         )
 
                         //  put logged in flag

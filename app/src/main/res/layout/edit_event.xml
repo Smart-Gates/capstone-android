@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/edit_event">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#38889c"
+        android:gravity="center">
+        <LinearLayout
+            android:id="@+id/ll_edit_event_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#38889c"
+            android:padding="25dp"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/changeEventTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_title"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <EditText
+                android:id="@+id/changeEventDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_description"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <EditText
+                android:id="@+id/changeEventLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_location"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <EditText
+                android:id="@+id/changeEventStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_start_time"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <EditText
+                android:id="@+id/changeEventEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_end_time"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <EditText
+                android:id="@+id/changeEventAttendee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:hint="@string/prompt_attendee"
+                android:inputType="textCapSentences|textMultiLine"
+                android:singleLine="true"
+                android:paddingBottom="20dp"
+                android:textColor="#6bfff7"
+                android:textColorHint="#52afaa"
+                android:layout_marginBottom="20dp">
+            </EditText>
+
+            <Button
+                android:id="@+id/btn_event_edit_submit"
+                android:textColor="#FFF"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:text="SUBMIT"
+                android:textAllCaps="false"
+                android:background="#236175"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -32,6 +32,11 @@
             android:label="ExpandEvent"/>
 
         <activity
+            android:name=".events.EditEvent"
+            android:label="EditEvent"/>
+
+
+        <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>

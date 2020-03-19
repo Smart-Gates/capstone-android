@@ -64,7 +64,8 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit">
+                    android:text="@string/edit"
+                    android:id="@+id/event_edit_btn">
 
                 </Button>
                 <Button
