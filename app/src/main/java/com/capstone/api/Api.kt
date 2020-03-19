@@ -9,8 +9,8 @@ import com.capstone.models.LoginResponse
 import com.capstone.models.events.Event
 import com.capstone.models.events.EventPayload
 import com.capstone.models.reminders.Reminder
+import com.capstone.models.reminders.ReminderList
 import com.capstone.models.reminders.ReminderPayload
-import com.capstone.models.reminders.RemindersList
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -74,7 +74,6 @@ public interface Api {
         @Header("Authorization") auth: String,
         @Body fcmTokenPayload: FCMTokenPayload
     ): Call<FCMTokenResponse>
-    ): Call<RemindersList>
 
     @Headers("Content-Type: application/json")
     @POST("api/reminders")

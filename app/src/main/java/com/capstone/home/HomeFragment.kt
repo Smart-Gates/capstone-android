@@ -17,8 +17,8 @@ import com.capstone.api.Retrofit2Client
 import com.capstone.events.AddEvent
 import com.capstone.events.EventViewModel
 import com.capstone.events.ExpandEvent
-import com.capstone.models.events.EventsList
-import com.capstone.models.reminders.RemindersList
+import com.capstone.models.events.EventList
+import com.capstone.models.reminders.ReminderList
 import com.capstone.reminders.AddReminder
 import com.capstone.reminders.ReminderViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -112,9 +112,9 @@ class HomeFragment : Fragment() {
         auth = "Bearer $auth"
 
         Retrofit2Client.instance.getReminders(auth)
-            .enqueue(object : Callback<RemindersList> {
+            .enqueue(object : Callback<ReminderList> {
                 override fun onFailure(
-                    call: Call<RemindersList>,
+                    call: Call<ReminderList>,
                     t: Throwable
                 ) {
                     Toast.makeText(activity, t.message, Toast.LENGTH_LONG).show()
@@ -122,8 +122,8 @@ class HomeFragment : Fragment() {
                 }
 
                 override fun onResponse(
-                    call: Call<RemindersList>,
-                    response: Response<RemindersList>
+                    call: Call<ReminderList>,
+                    response: Response<ReminderList>
                 ) {
                     if (response.code() == 200) {
                         reminderViewModel.setReminders(response.body())
