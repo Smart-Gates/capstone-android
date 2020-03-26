@@ -132,7 +132,6 @@ internal class CapService : Service() {
             val alarmT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA).parse(start)!!.time
             val timeNow = Calendar.getInstance().timeInMillis
             val diff = alarmT - timeNow
-
             //create new alarms for future
             if (diff > 0) {
                 Log.d(TAG, "Creating new event @$start in $diff ms")
@@ -140,8 +139,9 @@ internal class CapService : Service() {
                     DisplayNotification(event.id.toInt(), event.title, event.description, alarmT)
                 displayNotificationLater(displayNotification, mContext)
             }
-            Log.d("LOG_TAG_CHECK", "Past Start Time @$start event notification not created")
-
+            else{
+                Log.d(TAG, "Past Start Time @$start event notification not created")
+            }
         }
     }
 
@@ -165,8 +165,9 @@ internal class CapService : Service() {
                     )
                 displayNotificationLater(displayNotification, mContext)
             }
-            Log.d(TAG, "Past Start Time @$start reminder notification not created")
-
+            else{
+                Log.d(TAG, "Past Start Time @$start reminder notification not created")
+            }
         }
     }
 
