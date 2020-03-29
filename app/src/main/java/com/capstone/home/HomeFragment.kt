@@ -335,7 +335,7 @@ class HomeFragment : Fragment() {
     private fun populateWeather () {
         val currentWeather = weatherViewModel.getWeather()?.currently
         root.weather_conditions.text = currentWeather?.summary
-        root.weather_temperature.text = currentWeather?.temperature.toString() +"°C"
+        root.weather_temperature.text = currentWeather?.temperature?.toInt().toString() +"°C"
         root.weather_humidity.text = "Humidity "+ currentWeather?.humidity.toString()
         if(currentWeather?.precipType != null){
             root.weather_precip.text = currentWeather.precipType.toString().toUpperCase()
