@@ -18,7 +18,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.capstone.notifications.GeofenceBroadcastReceiver
+import com.capstone.location.GeofenceBroadcastReceiver
 import com.capstone.notifications.MyFirebaseMessagingService
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient

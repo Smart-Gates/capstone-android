@@ -22,7 +22,7 @@ public interface Api {
     ): Call<LoginResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("api/weather/{longitude}/{latitude}")
+    @GET("api/weather/{latitude}/{longitude}")
     fun getWeather(
         @Header("Authorization") auth: String,
         @Path("longitude") longitude: String?,

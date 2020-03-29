@@ -72,7 +72,7 @@
             android:enabled="true"
             android:exported="false">
         </receiver>
-        <receiver android:name=".notifications.GeofenceBroadcastReceiver"/>
+        <receiver android:name=".location.GeofenceBroadcastReceiver"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

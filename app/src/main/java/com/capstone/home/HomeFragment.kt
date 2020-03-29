@@ -1,10 +1,14 @@
 package com.capstone.home
 
+import Weather
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +21,10 @@ import com.capstone.api.Retrofit2Client
 import com.capstone.events.AddEvent
 import com.capstone.events.EventViewModel
 import com.capstone.events.ExpandEvent
+import com.capstone.location.LocationProvider
 import com.capstone.models.events.EventList
 import com.capstone.models.reminders.ReminderList
+import com.capstone.models.weather.WeatherViewModel
 import com.capstone.reminders.AddReminder
 import com.capstone.reminders.ReminderViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -27,11 +33,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.Serializable
 
+
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var reminderViewModel: ReminderViewModel
     private lateinit var eventViewModel: EventViewModel
+    private lateinit var weatherViewModel: WeatherViewModel
     private lateinit var root : View
 
     override fun onCreateView(
@@ -43,6 +51,7 @@ class HomeFragment : Fragment() {
         initViewModels()
         eventRequest()
         reminderRequest()
+        weatherRequest()
 
         root.btn_weather.setOnClickListener {
             val intent = Intent(activity, WeatherActivity::class.java)
@@ -73,6 +82,7 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         reminderViewModel = ViewModelProviders.of(this).get(ReminderViewModel::class.java)
         eventViewModel = ViewModelProviders.of(this).get(EventViewModel::class.java)
+        weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel::class.java)
     }
 
     private fun eventRequest () {
@@ -131,6 +141,41 @@ class HomeFragment : Fragment() {
                     }
                 }
             })
+    }
+
+    private fun weatherRequest () {
+        val sharedPrefs =
+            this.activity!!.getSharedPreferences(
+                getString(R.string.shared_preferences_key),
+                Context.MODE_PRIVATE
+            )
+        var auth = sharedPrefs!!.getString(getString(R.string.access_token), "default")!!
+        auth = "Bearer $auth"
+
+        // using the location provider to get the long and lat, create the listener to set the viewModel
+        LocationProvider.instance!!.init(context)
+        LocationProvider.instance!!.getLocation()?.addOnSuccessListener { location: Location? ->
+            Retrofit2Client.instance.getWeather(
+                auth, location!!.longitude.toString(), location.latitude.toString()
+            ).enqueue(object : Callback<Weather> {
+                    override fun onFailure(
+                        call: Call<Weather>,
+                        t: Throwable
+                    ) {
+                        Log.d(TAG, "Unsuccessful weather call")
+                    }
+                    override fun onResponse(
+                        call: Call<Weather>,
+                        response: Response<Weather>
+                    ) {
+                        if (response.code() == 200) {
+                            weatherViewModel.setWeather(response.body())
+                            Log.d(TAG, "Successful weather call")
+                            populateWeather()
+                        }
+                    }
+                })
+        }
     }
 
     private fun populateEvent () {
@@ -285,4 +330,34 @@ class HomeFragment : Fragment() {
             root.reminders_group.addView(card)
         }
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun populateWeather () {
+        val currentWeather = weatherViewModel.getWeather()?.currently
+        root.weather_conditions.text = currentWeather?.summary
+        root.weather_temperature.text = currentWeather?.temperature.toString() +"°C"
+        root.weather_humidity.text = "Humidity "+ currentWeather?.humidity.toString()
+        if(currentWeather?.precipType != null){
+            root.weather_precip.text = currentWeather.precipType.toString().toUpperCase()
+        }
+
+        if(currentWeather?.icon != null){
+            when (currentWeather.icon) {
+                "clear-day" -> root.weather_icon.setImageResource(R.drawable.sun_96)
+                "clear-night" -> root.weather_icon.setImageResource(R.drawable.moon_96)
+                "rain" -> root.weather_icon.setImageResource(R.drawable.rain_cloud_96)
+                "snow" -> root.weather_icon.setImageResource(R.drawable.cloud_image)
+                "sleet" -> root.weather_icon.setImageResource(R.drawable.sleet_96)
+                "wind" -> root.weather_icon.setImageResource(R.drawable.wind)
+                "fog" -> root.weather_icon.setImageResource(R.drawable.fog_96)
+                "cloudy" -> root.weather_icon.setImageResource(R.drawable.clouds_96)
+                "partly-cloudy-day" -> root.weather_icon.setImageResource(R.drawable.clouds_96)
+                "partly-cloudy-night" -> root.weather_icon.setImageResource(R.drawable.moon_cloud_96)
+                else -> {
+                    root.weather_icon.setImageResource(R.drawable.cloud_image)
+                }
+            }
+        }
+    }
 }
+private const val TAG = "HomeFragment"
