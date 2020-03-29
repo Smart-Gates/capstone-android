@@ -76,6 +76,7 @@ class HomeFragment : Fragment() {
         root.event_group.removeAllViews()
         eventRequest()
         reminderRequest()
+        weatherRequest()
     }
 
     private fun initViewModels () {

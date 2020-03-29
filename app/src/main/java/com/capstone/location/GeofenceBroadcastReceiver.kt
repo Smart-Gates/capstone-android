@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.capstone.R
 import com.capstone.notifications.sendNotification
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
@@ -28,46 +29,38 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         val notificationManager = context!!.getSystemService(
             NotificationManager::class.java
         )
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
 
-            // Get the geofences that were triggered. A single event can trigger
-            // multiple geofences.
-            val triggeringGeofences = geofencingEvent.triggeringGeofences
-
-            // Get the transition details as a String.
-            val geofenceTransitionDetails = getGeofenceTransitionDetails(
-                this,
-                geofenceTransition,
-                triggeringGeofences
+        val sharedPref =
+            context.getSharedPreferences(
+                context.getString(R.string.shared_preferences_key),
+                Context.MODE_PRIVATE
             )
+        when (geofenceTransition) {
+            Geofence.GEOFENCE_TRANSITION_ENTER -> {
+                val enterText = sharedPref.getString(context.getString(R.string.geofence_enter_store), "")
 
-            // Send notification and log the transition details.
+                notificationManager?.sendNotification(
+                    99999999,
+                    "You've Entered The Gate!",
+                    enterText!!,
+                    context
+                )
+            }
+            Geofence.GEOFENCE_TRANSITION_EXIT -> {
+                val exitText  = sharedPref.getString(context.getString(R.string.geofence_exit_store), "")
 
-
-            notificationManager?.sendNotification(
-                99999999,
-                "You've Entered The Gate!",
-                "The Geofence has been passed",
-                context
-            )
-            Log.i(TAG, geofenceTransitionDetails.toString())
-        } else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
-            notificationManager?.sendNotification(
-                99999999,
-                "You've Left The Gate!",
-                "Remember your: keys, ID card, and bag",
-                context
-            )
-        }
-
-        else {
-            Log.e(TAG, "Geofence transition is invalid")
+                notificationManager?.sendNotification(
+                    99999999,
+                    "You've Left The Gate!",
+                    exitText!!,
+                    context
+                )
+            }
+            else -> {
+                Log.e(TAG, "Geofence transition is invalid")
+            }
         }
     }
-    fun getGeofenceTransitionDetails(broadcastReceiver: GeofenceBroadcastReceiver, transitionType: Int, triggeringGeofences: MutableList<Geofence>){
-
-    }
-
 }
 
 private const val TAG = "GeofenceBroadcastReceiver"

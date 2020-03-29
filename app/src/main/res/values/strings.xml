@@ -2,6 +2,7 @@
     <string name="app_name">CapstoneAndroid</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
+    <string name="title_geofence">Geofence</string>
     <string name="title_logout">Logout</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
@@ -36,4 +37,9 @@
     <string name="edit">Edit</string>
     <string name="delete">delete</string>
     <string name="org_address">"org_address"</string>
+    <string name="layout_update_notification">Update Notification</string>
+    <string name="layout_notification_when_entering_gate">Notification when entering gate</string>
+    <string name="layout_notification_when_exiting_gate">Notification when exiting gate</string>
+    <string name="geofence_enter_store">geofence enter store</string>
+    <string name="geofence_exit_store">geofence exit store</string>
 </resources>

@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_geofence"
+        android:name="com.capstone.location.GeofenceFragment"
+        android:label="@string/title_geofence"
+        tools:layout="@layout/fragment_geofence" />
+
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.capstone.activities.logout.LogoutFragment"
         android:label="@string/title_logout"
