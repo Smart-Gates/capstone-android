@@ -1,13 +1,17 @@
 package com.capstone.api
 
 import Weather
-import com.capstone.models.*
-import com.capstone.models.events.EventList
-import com.capstone.models.events.Event
-import com.capstone.models.events.EventPayload
-import com.capstone.models.reminders.Reminder
-import com.capstone.models.reminders.ReminderList
-import com.capstone.models.reminders.ReminderPayload
+import com.capstone.api.request.FCMTokenPayload
+import com.capstone.api.request.LoginPayload
+import com.capstone.api.response.FCMTokenResponse
+import com.capstone.api.response.LoginResponse
+import com.capstone.api.response.OrganizationResponse
+import com.capstone.api.response.events.EventList
+import com.capstone.api.response.events.Event
+import com.capstone.api.response.events.EventPayload
+import com.capstone.api.response.reminders.Reminder
+import com.capstone.api.response.reminders.ReminderList
+import com.capstone.api.response.reminders.ReminderPayload
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -22,7 +26,7 @@ public interface Api {
     ): Call<LoginResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("api/weather/{longitude}/{latitude}")
+    @GET("api/weather/{latitude}/{longitude}")
     fun getWeather(
         @Header("Authorization") auth: String,
         @Path("longitude") longitude: String?,
