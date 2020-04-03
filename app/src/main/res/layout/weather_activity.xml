@@ -347,7 +347,7 @@
             android:layout_marginStart="100dp"
             android:layout_marginEnd="100dp"
             android:layout_marginBottom="85dp"
-            android:text="TextVi"
+            android:text="11°C"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="40sp" />
