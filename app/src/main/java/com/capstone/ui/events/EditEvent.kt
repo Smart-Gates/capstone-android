@@ -32,8 +32,14 @@ class EditEvent : AppCompatActivity() {
         changeEventStartTime.append(card.start_time)
         changeEventEndTime.append(card.end_time)
         var attendeeList = ""
+        var counter = 0
         card.attendees?.forEach { user ->
-            attendeeList += "," + user.email
+            if (counter != 0) {
+                attendeeList += ","
+            }
+
+            counter++;
+            attendeeList += user.email
         }
 
         changeEventAttendee.append(attendeeList)
