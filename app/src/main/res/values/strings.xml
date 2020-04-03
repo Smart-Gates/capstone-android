@@ -42,4 +42,5 @@
     <string name="layout_notification_when_exiting_gate">Notification when exiting gate</string>
     <string name="geofence_enter_store">geofence enter store</string>
     <string name="geofence_exit_store">geofence exit store</string>
+    <string name="submit">SUBMIT</string>
 </resources>

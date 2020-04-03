@@ -34,8 +34,20 @@
             android:label="ExpandEvent"/>
 
         <activity
+            android:name="com.capstone.ui.reminders.ExpandReminder"
+            android:label="ExpandReminder"/>
+
+        <activity
             android:name="com.capstone.ui.events.EditEvent"
             android:label="EditEvent"/>
+
+        <activity
+            android:name="com.capstone.ui.reminders.EditReminder"
+            android:label="EditReminder"/>
+
+        <activity
+            android:name="com.capstone.ui.EditTime"
+            android:label="EditTime"/>
 
 
         <activity
@@ -77,7 +89,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_r"/>
-        <activity android:name="com.capstone.ui.reminders.ExpandReminder" />
+
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,22 +17,24 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.capstone.R
-import com.capstone.ui.weather.WeatherActivity
 import com.capstone.api.Retrofit2Client
-import com.capstone.ui.events.AddEvent
-import com.capstone.ui.events.EventViewModel
-import com.capstone.ui.events.ExpandEvent
-import com.capstone.utils.location.LocationProvider
 import com.capstone.api.response.events.EventList
 import com.capstone.api.response.reminders.ReminderList
 import com.capstone.api.response.weather.WeatherViewModel
+import com.capstone.ui.events.AddEvent
+import com.capstone.ui.events.EventViewModel
+import com.capstone.ui.events.ExpandEvent
 import com.capstone.ui.reminders.AddReminder
+import com.capstone.ui.reminders.ExpandReminder
 import com.capstone.ui.reminders.ReminderViewModel
+import com.capstone.ui.weather.WeatherActivity
+import com.capstone.utils.location.LocationProvider
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.Serializable
+import java.text.SimpleDateFormat
 
 
 class HomeFragment : Fragment() {
@@ -73,7 +76,6 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        root.event_group.removeAllViews()
         eventRequest()
         reminderRequest()
         weatherRequest()
@@ -116,6 +118,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun reminderRequest () {
+
         val sharedPrefs =
             this.activity!!.getSharedPreferences(getString(R.string.shared_preferences_key),
                 Context.MODE_PRIVATE)
@@ -179,156 +182,205 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun populateEvent () {
         var pastEvent = RelativeLayout(activity)
         var counter = 0
         root.event_group.removeAllViews()
 
         eventViewModel.getEventsList()?.content?.forEach { event ->
-
-            val card = RelativeLayout(activity)
-            card.id = counter
-
-            var params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 120)
+            val eventCard = LinearLayout(activity)
+            eventCard.orientation = LinearLayout.VERTICAL
+            eventCard.id = counter
+            var params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
             params.setMargins(15, 30, 15, 0)
+            eventCard.layoutParams = params
+            eventCard.setBackgroundColor(Color.WHITE)
 
-            if (counter != 0) {
-                params.addRule(RelativeLayout.BELOW, pastEvent.id)
-            }
+            // Creating the Columns for the Text
+            var llColumn = LinearLayout(activity)
+            var colParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
+            llColumn.orientation = LinearLayout.HORIZONTAL
 
-            card.layoutParams = params
-            card.setBackgroundColor(Color.WHITE)
+            var leftColumn = LinearLayout(activity)
+            var rightColumn = LinearLayout(activity)
+            val llColumnParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
+            llColumnParams.setMargins(10, 0, 10, 0)
+            leftColumn.layoutParams = llColumnParams
+            rightColumn.layoutParams = llColumnParams
+            leftColumn.orientation = LinearLayout.VERTICAL
+            rightColumn.orientation = LinearLayout.VERTICAL
 
-            var titleLayout = RelativeLayout(activity)
-            params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.setMargins(10, 0, 0, 5)
-            titleLayout.layoutParams = params
+            llColumn.addView(leftColumn)
+            llColumn.addView(rightColumn)
+
+            // Creating Title TextView
             var title = TextView(activity)
             title.setTextColor(Color.BLACK)
             title.textSize = 18F
             title.typeface = Typeface.DEFAULT_BOLD
-            title.id = View.generateViewId()
             title.text = event.title
-            titleLayout.addView(title)
 
-            var descriptionLayout = RelativeLayout(activity)
-            params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.addRule(RelativeLayout.BELOW, title.id)
-            params.setMargins(10, 50, 10, 0)
-            descriptionLayout.layoutParams = params
+            // Creating Description TextView
             var description = TextView(activity)
             description.setTextColor(Color.BLACK)
             description.text = event.description
-            descriptionLayout.addView(description)
 
-            var buttonLayout = RelativeLayout(activity)
-            params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT
-            )
+            // Creating Location TextView
+            var location = TextView(activity)
+            location.setTextColor(Color.BLACK)
+            location.text = event.location
 
-            var eventButton = Button(activity)
-            eventButton.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            eventButton.setBackgroundColor(Color.TRANSPARENT)
-            eventButton.setOnClickListener {
+            // Creating Time TextView
+            var startTime = event.start_time
+            var endTime = event.end_time
+            val dateFormatter =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val dateStart = dateFormatter.parse(startTime)
+            val dateEnd = dateFormatter.parse(endTime)
+            val timeFormatter = SimpleDateFormat("h:mm a")
+            startTime = timeFormatter.format(dateStart)
+            endTime = timeFormatter.format(dateEnd)
+            var time = TextView (activity)
+            time.setTextColor(Color.BLACK)
+            time.text = "$startTime to $endTime"
 
+            // Creating Day TextView
+            var day = TextView(activity)
+            var dayFormatter = SimpleDateFormat("d")
+            day.text = dayFormatter.format(dateStart)
+            day.setTextColor(Color.BLACK)
+            day.typeface = Typeface.DEFAULT_BOLD
+            day.textSize = 36F
+            day.gravity = Gravity.CENTER
+
+            // Creating Month TextView
+            val month = TextView(activity)
+            dayFormatter = SimpleDateFormat("MMM")
+            month.text = dayFormatter.format(dateStart).toUpperCase()
+            month.setTextColor(Color.BLACK)
+            month.gravity = Gravity.CENTER
+
+            // Adding TextViews to the Appropriate Column
+            rightColumn.addView(title)
+            rightColumn.addView(description)
+            rightColumn.addView(location)
+            rightColumn.addView(time)
+            leftColumn.addView(day)
+            leftColumn.addView(month)
+
+            // Adding the Remaining Views
+            eventCard.addView(llColumn)
+
+            // Set Expanded View
+            eventCard.setOnClickListener {
                 val intent = Intent(activity, ExpandEvent::class.java)
                 intent.putExtra("event_object", event as Serializable)
                 startActivity(intent)
                 populateEvent()
             }
-            buttonLayout.addView(eventButton)
 
-            card.addView(titleLayout)
-            card.addView(descriptionLayout)
-            card.addView(buttonLayout)
-
-            counter++
-            pastEvent = card
-            root.event_group.addView(card)
-
-
+            // Add Card to Group
+            root.event_group.addView(eventCard)
         }
     }
 
     private fun populateReminder () {
         var pastReminder = RelativeLayout(activity)
         var counter = 0
+        root.reminders_group.removeAllViews()
 
         reminderViewModel.getRemindersList()?.content?.forEach { reminder ->
-
-            // Create and Display Reminder Card
-            val card = RelativeLayout(activity)
-            card.id = View.generateViewId()
-            var params =
-                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+            val reminderCard = LinearLayout(activity)
+            reminderCard.orientation = LinearLayout.VERTICAL
+            reminderCard.id = counter
+            var params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
             params.setMargins(15, 30, 15, 0)
-            if (counter != 0) {
-                params.addRule(RelativeLayout.BELOW, pastReminder.id)
-            }
-            card.layoutParams = params
-            card.setBackgroundColor(Color.WHITE)
+            reminderCard.layoutParams = params
+            reminderCard.setBackgroundColor(Color.WHITE)
 
-            // Add Reminder Title to Reminder Card
-            var titleLayout = RelativeLayout(activity)
-            titleLayout.id = View.generateViewId()
-            params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.setMargins(10, 0, 0, 5)
-            titleLayout.layoutParams = params
+            // Creating the Columns for the Text
+            var llColumn = LinearLayout(activity)
+            var colParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
+            llColumn.orientation = LinearLayout.HORIZONTAL
+
+            var leftColumn = LinearLayout(activity)
+            var rightColumn = LinearLayout(activity)
+            val llColumnParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
+            llColumnParams.setMargins(10, 0, 10, 0)
+            leftColumn.layoutParams = llColumnParams
+            rightColumn.layoutParams = llColumnParams
+            leftColumn.orientation = LinearLayout.VERTICAL
+            rightColumn.orientation = LinearLayout.VERTICAL
+
+            llColumn.addView(leftColumn)
+            llColumn.addView(rightColumn)
+
+            // Creating Title TextView
             var title = TextView(activity)
             title.setTextColor(Color.BLACK)
             title.textSize = 18F
             title.typeface = Typeface.DEFAULT_BOLD
-            title.id = View.generateViewId()
             title.text = reminder.title
-            titleLayout.addView(title)
 
-            // Add Reminder Description to Reminder Card
-            var descriptionLayout = RelativeLayout(activity)
-            descriptionLayout.id = View.generateViewId()
-            params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.addRule(RelativeLayout.BELOW, titleLayout.id)
-            params.setMargins(10, 0, 10, 0)
-            descriptionLayout.layoutParams = params
+            // Creating Description TextView
             var description = TextView(activity)
             description.setTextColor(Color.BLACK)
             description.text = reminder.description
-            descriptionLayout.addView(description)
 
-            // Add Reminder Time to Reminder Card
-            var timeLayout = RelativeLayout(activity)
-            params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.addRule(RelativeLayout.BELOW, descriptionLayout.id)
-            params.setMargins(10, 0, 0, 0)
-            timeLayout.layoutParams = params
-            var time = TextView(activity)
+            // Creating Time TextView
+            var startTime = reminder.start_time
+            val dateFormatter =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val dateStart = dateFormatter.parse(startTime)
+            val timeFormatter = SimpleDateFormat("h:mm a")
+            startTime = timeFormatter.format(dateStart)
+            var time = TextView (activity)
             time.setTextColor(Color.BLACK)
-            time.text = reminder.start_time
-            timeLayout.addView(time)
+            time.text = startTime
 
-            // Add all the TextView to the Card
-            card.addView(titleLayout)
-            card.addView(descriptionLayout)
-            card.addView(timeLayout)
+            // Creating Day TextView
+            var day = TextView(activity)
+            var dayFormatter = SimpleDateFormat("d")
+            day.text = dayFormatter.format(dateStart)
+            day.setTextColor(Color.BLACK)
+            day.typeface = Typeface.DEFAULT_BOLD
+            day.textSize = 36F
+            day.gravity = Gravity.CENTER
 
-            counter++
-            pastReminder = card
-            root.reminders_group.addView(card)
+            // Creating Month TextView
+            val month = TextView(activity)
+            dayFormatter = SimpleDateFormat("MMM")
+            month.text = dayFormatter.format(dateStart).toUpperCase()
+            month.setTextColor(Color.BLACK)
+            month.gravity = Gravity.CENTER
+
+            // Adding TextViews to the Appropriate Column
+            rightColumn.addView(title)
+            rightColumn.addView(description)
+            rightColumn.addView(time)
+            leftColumn.addView(day)
+            leftColumn.addView(month)
+
+            // Adding the Remaining Views
+            reminderCard.addView(llColumn)
+
+            // Set Expanded View
+            reminderCard.setOnClickListener {
+                val intent = Intent(activity, ExpandReminder::class.java)
+                intent.putExtra("reminder_object", reminder as Serializable)
+                startActivity(intent)
+                populateEvent()
+            }
+
+            // Add Card to Group
+            root.reminders_group.addView(reminderCard)
         }
     }
 

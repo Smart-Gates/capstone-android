@@ -84,7 +84,7 @@ public interface Api {
     ): Call<Reminder>
 
     @Headers("Content-Type: application/json")
-    @PUT("api/events/{reminder_id}")
+    @PUT("api/reminders/{reminder_id}")
     fun editReminder(
         @Header("Authorization") auth: String,
         @Path("reminder_id") event_id: String,
@@ -92,7 +92,7 @@ public interface Api {
     ): Call<Reminder>
 
     @Headers("Content-Type: application/json")
-    @DELETE("api/events/{reminder_id}")
+    @DELETE("api/reminders/{reminder_id}")
     fun deleteReminder(
         @Header("Authorization") auth: String,
         @Path("reminder_id") event_id: String

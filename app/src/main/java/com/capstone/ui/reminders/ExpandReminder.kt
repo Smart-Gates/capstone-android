@@ -15,6 +15,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.Serializable
 
 class ExpandReminder : AppCompatActivity() {
     private val REQUEST_FORM = 1
@@ -34,7 +35,7 @@ class ExpandReminder : AppCompatActivity() {
 
         var userEmail = sharedPref!!.getString(getString(R.string.user_email), "default")!!
 
-        event_delete_btn.setOnClickListener {
+        reminder_delete_btn.setOnClickListener {
             if (userEmail == card.creator.email) {
                 deleteReminder(auth, card)
             } else {
@@ -46,18 +47,18 @@ class ExpandReminder : AppCompatActivity() {
             }
         }
 
-        /*
-        event_edit_btn.setOnClickListener {
+
+        reminder_edit_btn.setOnClickListener {
             val intent = Intent(applicationContext, EditReminder::class.java)
-            intent.putExtra("event_object", card as Serializable)
+            intent.putExtra("reminder_object", card as Serializable)
             startActivityForResult(intent, REQUEST_FORM)
         }
 
-         */
+
     }
 
     private fun deleteReminder (auth: String, card: Reminder) {
-        Retrofit2Client.instance.deleteEvent(auth, card.id.toString()).enqueue(object : Callback<ResponseBody> {
+        Retrofit2Client.instance.deleteReminder(auth, card.id.toString()).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(
                     applicationContext,
@@ -71,7 +72,7 @@ class ExpandReminder : AppCompatActivity() {
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == 200) {
-                    //Toast.makeText(applicationContext, response.body().toString(), Toast.LENGTH_LONG).show()
+                    //Toast.makeText(applicationContext, card.id.toString(), Toast.LENGTH_LONG).show()
                     finish()
                     return
                 } else {
@@ -87,7 +88,7 @@ class ExpandReminder : AppCompatActivity() {
 
         // check if the requestCode is the wanted one and if the result is what we are expecting
         if (requestCode == REQUEST_FORM && resultCode == RESULT_OK) {
-            val name = data?.getSerializableExtra("return_event") as Event
+            val name = data?.getSerializableExtra("return_reminder") as Reminder
             updateReminderInfo(name.title, name.description, name.start_time)
         }
     }

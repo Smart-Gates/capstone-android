@@ -1,6 +1,7 @@
 package com.capstone.api.response.reminders
 import com.capstone.api.response.User
 import com.capstone.api.response.events.Event
+import java.io.Serializable
 
 /** Response from POST of a new method or a single event
  * */
@@ -13,4 +14,4 @@ data class Reminder(
     val event: Event,
     val start_time: String,
     val creator: User
-)
+) : Serializable
