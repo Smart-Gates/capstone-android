@@ -9,6 +9,7 @@ class ReminderViewModel : ViewModel() {
 
     fun setReminders (initList: ReminderList?) {
         reminders = initList
+        reminders!!.content = reminders!!.content.asReversed()
     }
 
     fun  getReminder (index: Int): Reminder? {

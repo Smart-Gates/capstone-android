@@ -15,4 +15,11 @@
         <item name="android:windowFullscreen">true</item>
 
     </style>
+    <style name="MyBase.TimePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:headerBackground">@android:color/transparent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorAccent">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
 </resources>

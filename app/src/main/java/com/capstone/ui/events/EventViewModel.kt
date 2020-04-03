@@ -9,6 +9,7 @@ class EventViewModel : ViewModel() {
 
     fun setEvents (initList: EventList?) {
         events = initList
+        events!!.content = events!!.content.asReversed()
     }
 
     fun  getEvent (index: Int): Event? {

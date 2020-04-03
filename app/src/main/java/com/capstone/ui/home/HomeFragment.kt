@@ -18,12 +18,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.capstone.R
 import com.capstone.api.Retrofit2Client
+import com.capstone.api.response.OrganizationResponse
 import com.capstone.api.response.events.EventList
 import com.capstone.api.response.reminders.ReminderList
 import com.capstone.api.response.weather.WeatherViewModel
 import com.capstone.ui.events.AddEvent
 import com.capstone.ui.events.EventViewModel
 import com.capstone.ui.events.ExpandEvent
+import com.capstone.ui.organization.OrganizationViewModel
 import com.capstone.ui.reminders.AddReminder
 import com.capstone.ui.reminders.ExpandReminder
 import com.capstone.ui.reminders.ReminderViewModel
@@ -43,6 +45,7 @@ class HomeFragment : Fragment() {
     private lateinit var reminderViewModel: ReminderViewModel
     private lateinit var eventViewModel: EventViewModel
     private lateinit var weatherViewModel: WeatherViewModel
+    private lateinit var organizationViewModel: OrganizationViewModel
     private lateinit var root : View
 
     override fun onCreateView(
@@ -55,6 +58,7 @@ class HomeFragment : Fragment() {
         eventRequest()
         reminderRequest()
         weatherRequest()
+        organizationRequest()
 
         root.btn_weather.setOnClickListener {
             val intent = Intent(activity, WeatherActivity::class.java)
@@ -86,6 +90,7 @@ class HomeFragment : Fragment() {
         reminderViewModel = ViewModelProviders.of(this).get(ReminderViewModel::class.java)
         eventViewModel = ViewModelProviders.of(this).get(EventViewModel::class.java)
         weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel::class.java)
+        organizationViewModel = ViewModelProviders.of(this).get(OrganizationViewModel::class.java)
     }
 
     private fun eventRequest () {
@@ -180,6 +185,37 @@ class HomeFragment : Fragment() {
                     }
                 })
         }
+    }
+
+     private fun organizationRequest() {
+        val sharedPrefs =
+            this.activity!!.getSharedPreferences(
+                getString(R.string.shared_preferences_key),
+                Context.MODE_PRIVATE
+            )
+        var auth = sharedPrefs!!.getString(getString(R.string.access_token), "")!!
+        auth = "Bearer $auth"
+
+        Retrofit2Client.instance.getUsersOrg(auth)
+            .enqueue(object : Callback<OrganizationResponse> {
+                override fun onFailure(call: Call<OrganizationResponse>?, t: Throwable) {
+                    Log.d(TAG, t.toString())
+                    Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
+                }
+                override fun onResponse(
+                    call: Call<OrganizationResponse>?,
+                    response: Response<OrganizationResponse>
+                ) {
+                    Log.d(TAG, "Successful user org call: $response")
+
+                    // check to make sure that it was a successful return to server
+                    if (response.code() == 200) {
+                        // begin generating the alarm notifications from the API response
+                        organizationViewModel.setorganization(response.body())
+                        populateorganization()
+                    }
+                }
+            })
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -411,6 +447,15 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun populateorganization() {
+        val newOrganization = organizationViewModel.getorganization()
+        root.organisation_name.text = newOrganization?.name
+        root.organisation_city.text = newOrganization?.city+","
+        root.organisation_street.text = newOrganization?.street_address+","
+        root.organisation_province.text = newOrganization?.province_state+","
+        root.organisation_zip.text = newOrganization?.zip
     }
 }
 private const val TAG = "HomeFragment"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8117EA</color>
-    <color name="colorPrimaryDark">#4D0E8C</color>
-    <color name="colorAccent">#C997FB</color>
-    <color name="colorAccent2">#390070</color>
+    <color name="colorPrimary">#8117EA</color><!--BACKGROUND-->
+    <color name="colorPrimaryDark">#4D0E8C</color><!--CARD TOP BACKGROUND-->
+    <color name="colorAccent">#C997FB</color><!--TOP BACKGROUND-->
+    <color name="colorAccent2">#390070</color><!--TOP BACKGROUND-->
     <color name="colorWhite">#FFF</color>
 </resources>
