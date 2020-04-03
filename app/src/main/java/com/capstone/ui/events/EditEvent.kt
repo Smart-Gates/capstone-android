@@ -38,7 +38,7 @@ class EditEvent : AppCompatActivity() {
                 attendeeList += ","
             }
 
-            counter++;
+            counter++
             attendeeList += user.email
         }
 
