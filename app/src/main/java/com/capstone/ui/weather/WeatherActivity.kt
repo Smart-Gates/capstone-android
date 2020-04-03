@@ -1,6 +1,7 @@
 package com.capstone.ui.weather
 
 import Weather
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
@@ -60,23 +61,22 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun populateWeather() {
         //date time conversion from UNIX time to human readable
         val unixTime = weather?.currently?.time.toString().toLong()
         val updatedAt = Date(unixTime * 1000L).toString()
         val minTemp =
-            "Min Temp: " + weather?.daily?.data?.get(0)?.temperatureMin.toString() + "°C"
+            "Min Temp: " + weather?.daily?.data?.get(0)?.temperatureMin?.toInt().toString() + "°C"
         val maxTemp =
-            "Max Temp: " + weather?.daily?.data?.get(0)?.temperatureMax.toString() + "°C"
+            "Max Temp: " + weather?.daily?.data?.get(0)?.temperatureMax?.toInt().toString() + "°C"
 
         findViewById<ProgressBar>(R.id.loader).visibility = View.VISIBLE
         findViewById<RelativeLayout>(R.id.mainContainer).visibility = View.GONE
         findViewById<TextView>(R.id.errorText).visibility = View.GONE
         findViewById<TextView>(R.id.updated_at).text = updatedAt
-        findViewById<TextView>(R.id.status).text =
-            weather?.currently?.summary.toString().capitalize()
-        findViewById<TextView>(R.id.temp).text =
-            weather?.currently?.temperature.toString()
+        findViewById<TextView>(R.id.status).text = weather?.currently?.summary.toString().capitalize()
+        findViewById<TextView>(R.id.temp_weather).text = weather?.currently?.temperature?.toInt().toString() +"°C"
         findViewById<TextView>(R.id.temp_min).text = minTemp
         findViewById<TextView>(R.id.temp_max).text = maxTemp
         findViewById<TextView>(R.id.precipitation).text =

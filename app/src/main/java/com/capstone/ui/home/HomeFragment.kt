@@ -212,7 +212,7 @@ class HomeFragment : Fragment() {
                     if (response.code() == 200) {
                         // begin generating the alarm notifications from the API response
                         organizationViewModel.setorganization(response.body())
-                        populateorganization()
+                        populateOrganization()
                     }
                 }
             })
@@ -428,6 +428,8 @@ class HomeFragment : Fragment() {
         root.weather_humidity.text = "Humidity "+ currentWeather?.humidity.toString()
         if(currentWeather?.precipType != null){
             root.weather_precip.text = currentWeather.precipType.toString().toUpperCase()
+        }else{
+            root.weather_precip.text = ""
         }
 
         if(currentWeather?.icon != null){
@@ -449,7 +451,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun populateorganization() {
+    private fun populateOrganization() {
         val newOrganization = organizationViewModel.getorganization()
         root.organisation_name.text = newOrganization?.name
         root.organisation_city.text = newOrganization?.city+","

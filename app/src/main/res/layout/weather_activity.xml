@@ -120,7 +120,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Percip Int"
+                        android:text="Precip Int"
                         android:textColor="#FFF"
                         android:textSize="12dp" />
 
@@ -338,22 +338,20 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/temp"
+            android:id="@+id/temp_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/overviewContainer"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="149dp"
-            android:layout_marginTop="202dp"
-            android:layout_marginEnd="118dp"
-            android:layout_marginBottom="412dp"
-            android:fontFamily="sans-serif-thin"
-            android:text="-2°C"
-            android:textColor="#FFF"
-            android:textSize="50dp" />
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="85dp"
+            android:text="TextVi"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="40sp" />
+
     </RelativeLayout>
 
     <ProgressBar
