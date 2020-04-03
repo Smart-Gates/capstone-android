@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:id="@+id/edit_time"
+    android:padding="25dp"
+    android:background="@color/colorPrimary">
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        android:id="@+id/timePicker">
+    </TimePicker>
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:id="@+id/datePicker">
+    </DatePicker>
+
+    <Button
+        android:id="@+id/btn_time_edit_submit"
+        android:textColor="#FFF"
+        android:fontFamily="monospace"
+        android:textStyle="bold"
+        android:text="@string/submit"
+        android:textAllCaps="false"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+</LinearLayout>

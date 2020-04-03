@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#38889c"
+    android:background="@color/colorPrimary"
     >
 
 
@@ -16,7 +16,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/layout_update_notification"
         app:layout_constraintStart_toStartOf="@+id/exitText"
-        app:layout_constraintTop_toBottomOf="@+id/exitText" />
+        app:layout_constraintTop_toBottomOf="@+id/exitText"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFF"
+        android:padding="5dp"/>
 
     <EditText
         android:id="@+id/enterText"
@@ -28,7 +31,8 @@
         android:ems="10"
         android:hint="@string/layout_notification_when_entering_gate"
         android:inputType="textPersonName"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +46,8 @@
         android:ems="10"
         android:hint="@string/layout_notification_when_exiting_gate"
         android:inputType="textPersonName"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/enterText"
         app:layout_constraintStart_toStartOf="@+id/enterText"

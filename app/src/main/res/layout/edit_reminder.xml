@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:id="@+id/add_event">
+    android:id="@+id/edit_reminder">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -9,7 +9,7 @@
         android:background="#38889c"
         android:gravity="center">
         <LinearLayout
-            android:id="@+id/ll_add_event_layout"
+            android:id="@+id/ll_edit_reminder_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -17,7 +17,7 @@
             android:padding="25dp"
             android:orientation="vertical">
             <EditText
-                android:id="@+id/editEventTitle"
+                android:id="@+id/changeReminderTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#FFF"
@@ -30,33 +30,21 @@
             </EditText>
 
             <EditText
-                android:id="@+id/editEventDescription"
+                android:id="@+id/changeReminderDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#FFF"
                 android:hint="@string/prompt_description"
                 android:singleLine="true"
                 android:paddingBottom="20dp"
+                android:inputType="textCapSentences|textMultiLine"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorAccent"
                 android:layout_marginBottom="20dp">
             </EditText>
 
             <EditText
-                android:id="@+id/editEventLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#FFF"
-                android:hint="@string/prompt_location"
-                android:singleLine="true"
-                android:paddingBottom="20dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorAccent"
-                android:layout_marginBottom="20dp">
-            </EditText>
-
-            <EditText
-                android:id="@+id/editEventStartTime"
+                android:id="@+id/changeReminderStartTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#FFF"
@@ -69,35 +57,8 @@
                 android:focusable="false">
             </EditText>
 
-            <EditText
-                android:id="@+id/editEventEndTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#FFF"
-                android:hint="@string/prompt_end_time"
-                android:singleLine="true"
-                android:paddingBottom="20dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorAccent"
-                android:layout_marginBottom="20dp"
-                android:focusable="false">
-            </EditText>
-
-            <EditText
-                android:id="@+id/editEventAttendee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#FFF"
-                android:hint="@string/prompt_attendee"
-                android:singleLine="true"
-                android:paddingBottom="20dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorAccent"
-                android:layout_marginBottom="20dp">
-            </EditText>
-
             <Button
-                android:id="@+id/btn_event_submit"
+                android:id="@+id/btn_reminder_edit_submit"
                 android:textColor="#FFF"
                 android:fontFamily="monospace"
                 android:textStyle="bold"

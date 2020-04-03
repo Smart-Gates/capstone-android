@@ -1,5 +1,7 @@
 package com.capstone.ui.reminders
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -8,31 +10,37 @@ import com.capstone.R
 import com.capstone.api.Retrofit2Client
 import com.capstone.api.response.reminders.Reminder
 import com.capstone.api.response.reminders.ReminderPayload
+import com.capstone.ui.EditTime
+import kotlinx.android.synthetic.main.add_reminder.*
+import kotlinx.android.synthetic.main.edit_reminder.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.Serializable
+import java.text.SimpleDateFormat
 
 class AddReminder : AppCompatActivity(){
+    private val REQUEST_FORM1 = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_reminder)
         var btnSubmit = findViewById<Button>(R.id.btn_reminder_submit)
 
         btnSubmit.setOnClickListener {
-            /*
-            val title = editEventTitle.text.toString().trim()
-            val description = editEventDescription.text.toString().trim()
-            val location = editEventLocation.text.toString().trim()
-            val startTime = editEventStartTime.text.toString().trim()
-            val endTime = editEventEndTime.text.toString().trim()
-            val attendees = editEventAttendee.text.toString().trim()
-             */
 
-            val title = "Testing App Event Creation"
-            val description = "This is a Test"
-            val startTime = "2020-01-28T08:00:00"
+            val title = editReminderTitle.text.trim().toString()
+            val description = editReminderDescription.text.trim().toString()
+            val startTime = editReminderStartTime.text.trim().toString()
+
             reminderCreateRequest(title, description, startTime)
 
+        }
+
+        editReminderStartTime.setOnClickListener {
+            val intent = Intent(applicationContext, EditTime::class.java)
+            intent.putExtra("time_object", editReminderStartTime.text.toString() as Serializable)
+            startActivityForResult(intent, REQUEST_FORM1)
         }
     }
 
@@ -43,8 +51,12 @@ class AddReminder : AppCompatActivity(){
         )
         var auth = sharedPrefs!!.getString(getString(R.string.access_token), "default")!!
         auth = "Bearer $auth"
-        val payload = ReminderPayload(title, description,  startTime
-        )
+        val dateFormatter =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val dateStart = dateFormatter.parse(startTime)
+        val returnDateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val newStartTime = returnDateFormatter.format(dateStart)
+        val payload = ReminderPayload(title, description, newStartTime)
 
         Retrofit2Client.instance.createReminder(auth, payload)
             .enqueue(object : Callback<Reminder> {
@@ -61,6 +73,15 @@ class AddReminder : AppCompatActivity(){
                     }
                 }
             })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_FORM1 && resultCode == Activity.RESULT_OK) {
+            val date = data?.getSerializableExtra("time_object") as String
+            editReminderStartTime.setText(date)
+        }
     }
 }
 

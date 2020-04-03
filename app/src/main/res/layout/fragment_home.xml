@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:id="@+id/fragment_home"
-        android:background="#38889c"
+        android:background="@color/colorPrimary"
         >
 
         <androidx.core.widget.NestedScrollView
@@ -43,12 +43,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="155dp"
                     android:layout_margin="5dp"
-                    android:background="#236175"
+                    android:background="@color/colorAccent2"
                     >
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:background="#10303C"
+                        android:background="@color/colorPrimaryDark"
                         android:id="@+id/weather_bar"
 
                         >
@@ -168,7 +168,7 @@
                     android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:background="#236175"
+                    android:background="@color/colorAccent2"
                     android:id="@+id/events_panel"
                     android:layout_below="@+id/weather_panel"
 
@@ -178,7 +178,7 @@
                         android:id="@+id/events_bar"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:background="#10303C"
+                        android:background="@color/colorPrimaryDark"
                         >
 
                         <TextView
@@ -217,14 +217,15 @@
                         android:layout_below="@+id/events_bar"
                         >
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:orientation="vertical"
                             android:id="@+id/event_group"
                             >
 
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
                     </androidx.core.widget.NestedScrollView>
 
@@ -234,7 +235,7 @@
                     android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:background="#236175"
+                    android:background="@color/colorAccent2"
                     android:id="@+id/reminders_panel"
                     android:layout_below="@+id/events_panel"
 
@@ -244,7 +245,7 @@
                         android:id="@+id/reminders_bar"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:background="#10303C"
+                        android:background="@color/colorPrimaryDark"
                         >
 
                         <TextView
@@ -279,10 +280,11 @@
                         android:layout_below="@+id/reminders_bar"
                         >
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:id="@+id/reminders_group"
+                            android:orientation="vertical"
                             />
 
                     </androidx.core.widget.NestedScrollView>

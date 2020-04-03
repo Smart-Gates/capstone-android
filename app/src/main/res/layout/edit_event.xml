@@ -6,14 +6,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#38889c"
         android:gravity="center">
         <LinearLayout
             android:id="@+id/ll_edit_event_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:background="#38889c"
+            android:background="@color/colorPrimary"
             android:padding="25dp"
             android:orientation="vertical">
             <EditText
@@ -24,8 +23,8 @@
                 android:hint="@string/prompt_title"
                 android:singleLine="true"
                 android:paddingBottom="20dp"
-                android:textColor="#6bfff7"
-                android:textColorHint="#52afaa"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorAccent"
                 android:layout_marginBottom="20dp">
             </EditText>
 
@@ -38,8 +37,8 @@
                 android:singleLine="true"
                 android:paddingBottom="20dp"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColor="#6bfff7"
-                android:textColorHint="#52afaa"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorAccent"
                 android:layout_marginBottom="20dp">
             </EditText>
 
@@ -51,8 +50,8 @@
                 android:hint="@string/prompt_location"
                 android:singleLine="true"
                 android:paddingBottom="20dp"
-                android:textColor="#6bfff7"
-                android:textColorHint="#52afaa"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorAccent"
                 android:layout_marginBottom="20dp">
             </EditText>
 
@@ -64,9 +63,10 @@
                 android:hint="@string/prompt_start_time"
                 android:singleLine="true"
                 android:paddingBottom="20dp"
-                android:textColor="#6bfff7"
-                android:textColorHint="#52afaa"
-                android:layout_marginBottom="20dp">
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorAccent"
+                android:layout_marginBottom="20dp"
+                android:focusable="false">
             </EditText>
 
             <EditText
@@ -77,9 +77,10 @@
                 android:hint="@string/prompt_end_time"
                 android:singleLine="true"
                 android:paddingBottom="20dp"
-                android:textColor="#6bfff7"
-                android:textColorHint="#52afaa"
-                android:layout_marginBottom="20dp">
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorAccent"
+                android:layout_marginBottom="20dp"
+                android:focusable="false">
             </EditText>
 
             <EditText
@@ -91,8 +92,8 @@
                 android:inputType="textCapSentences|textMultiLine"
                 android:singleLine="true"
                 android:paddingBottom="20dp"
-                android:textColor="#6bfff7"
-                android:textColorHint="#52afaa"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorAccent"
                 android:layout_marginBottom="20dp">
             </EditText>
 
@@ -103,7 +104,7 @@
                 android:textStyle="bold"
                 android:text="SUBMIT"
                 android:textAllCaps="false"
-                android:background="#236175"
+                android:background="@color/colorPrimaryDark"
                 android:layout_width="match_parent"
                 android:layout_height="30dp" />
         </LinearLayout>
