@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_geofence"
-        android:name="com.capstone.utils.location.GeofenceFragment"
+        android:name="com.capstone.ui.GeofenceFragment"
         android:label="@string/title_geofence"
         tools:layout="@layout/fragment_geofence" />
 

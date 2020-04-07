@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -14,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.capstone.R
@@ -30,6 +32,7 @@ import com.capstone.ui.reminders.AddReminder
 import com.capstone.ui.reminders.ExpandReminder
 import com.capstone.ui.reminders.ReminderViewModel
 import com.capstone.ui.weather.WeatherActivity
+import com.capstone.utils.CapService
 import com.capstone.utils.location.LocationProvider
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import retrofit2.Call
@@ -46,8 +49,9 @@ class HomeFragment : Fragment() {
     private lateinit var eventViewModel: EventViewModel
     private lateinit var weatherViewModel: WeatherViewModel
     private lateinit var organizationViewModel: OrganizationViewModel
-    private lateinit var root : View
+    private lateinit var root: View
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,6 +82,7 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onResume() {
         super.onResume()
         eventRequest()
@@ -85,7 +90,7 @@ class HomeFragment : Fragment() {
         weatherRequest()
     }
 
-    private fun initViewModels () {
+    private fun initViewModels() {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         reminderViewModel = ViewModelProviders.of(this).get(ReminderViewModel::class.java)
         eventViewModel = ViewModelProviders.of(this).get(EventViewModel::class.java)
@@ -93,10 +98,12 @@ class HomeFragment : Fragment() {
         organizationViewModel = ViewModelProviders.of(this).get(OrganizationViewModel::class.java)
     }
 
-    private fun eventRequest () {
+    private fun eventRequest() {
         val sharedPrefs =
-            this.activity!!.getSharedPreferences(getString(R.string.shared_preferences_key),
-                Context.MODE_PRIVATE)
+            this.activity!!.getSharedPreferences(
+                getString(R.string.shared_preferences_key),
+                Context.MODE_PRIVATE
+            )
         var auth = sharedPrefs!!.getString(getString(R.string.access_token), "default")!!
         auth = "Bearer $auth"
 
@@ -119,14 +126,16 @@ class HomeFragment : Fragment() {
                         populateEvent()
                     }
                 }
-        })
+            })
     }
 
-    private fun reminderRequest () {
+    private fun reminderRequest() {
 
         val sharedPrefs =
-            this.activity!!.getSharedPreferences(getString(R.string.shared_preferences_key),
-                Context.MODE_PRIVATE)
+            this.activity!!.getSharedPreferences(
+                getString(R.string.shared_preferences_key),
+                Context.MODE_PRIVATE
+            )
         var auth = sharedPrefs!!.getString(getString(R.string.access_token), "default")!!
         auth = "Bearer $auth"
 
@@ -152,7 +161,9 @@ class HomeFragment : Fragment() {
             })
     }
 
-    private fun weatherRequest () {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun weatherRequest() {
+        CapService().checkPermissionsLocation(this.activity!!, context!!)
         val sharedPrefs =
             this.activity!!.getSharedPreferences(
                 getString(R.string.shared_preferences_key),
@@ -167,27 +178,28 @@ class HomeFragment : Fragment() {
             Retrofit2Client.instance.getWeather(
                 auth, location!!.longitude.toString(), location.latitude.toString()
             ).enqueue(object : Callback<Weather> {
-                    override fun onFailure(
-                        call: Call<Weather>,
-                        t: Throwable
-                    ) {
-                        Log.d(TAG, "Unsuccessful weather call")
+                override fun onFailure(
+                    call: Call<Weather>,
+                    t: Throwable
+                ) {
+                    Log.d(TAG, "Unsuccessful weather call")
+                }
+
+                override fun onResponse(
+                    call: Call<Weather>,
+                    response: Response<Weather>
+                ) {
+                    if (response.code() == 200) {
+                        weatherViewModel.setWeather(response.body())
+                        Log.d(TAG, "Successful weather call")
+                        populateWeather()
                     }
-                    override fun onResponse(
-                        call: Call<Weather>,
-                        response: Response<Weather>
-                    ) {
-                        if (response.code() == 200) {
-                            weatherViewModel.setWeather(response.body())
-                            Log.d(TAG, "Successful weather call")
-                            populateWeather()
-                        }
-                    }
-                })
+                }
+            })
         }
     }
 
-     private fun organizationRequest() {
+    private fun organizationRequest() {
         val sharedPrefs =
             this.activity!!.getSharedPreferences(
                 getString(R.string.shared_preferences_key),
@@ -202,6 +214,7 @@ class HomeFragment : Fragment() {
                     Log.d(TAG, t.toString())
                     Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
                 }
+
                 override fun onResponse(
                     call: Call<OrganizationResponse>?,
                     response: Response<OrganizationResponse>
@@ -219,7 +232,7 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun populateEvent () {
+    private fun populateEvent() {
         var pastEvent = RelativeLayout(activity)
         var counter = 0
         root.event_group.removeAllViews()
@@ -228,22 +241,28 @@ class HomeFragment : Fragment() {
             val eventCard = LinearLayout(activity)
             eventCard.orientation = LinearLayout.VERTICAL
             eventCard.id = counter
-            var params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            var params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             params.setMargins(15, 30, 15, 0)
             eventCard.layoutParams = params
             eventCard.setBackgroundColor(Color.WHITE)
 
             // Creating the Columns for the Text
             var llColumn = LinearLayout(activity)
-            var colParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            var colParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             llColumn.orientation = LinearLayout.HORIZONTAL
 
             var leftColumn = LinearLayout(activity)
             var rightColumn = LinearLayout(activity)
-            val llColumnParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            val llColumnParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             llColumnParams.setMargins(10, 0, 10, 0)
             leftColumn.layoutParams = llColumnParams
             rightColumn.layoutParams = llColumnParams
@@ -280,7 +299,7 @@ class HomeFragment : Fragment() {
             val timeFormatter = SimpleDateFormat("h:mm a")
             startTime = timeFormatter.format(dateStart)
             endTime = timeFormatter.format(dateEnd)
-            var time = TextView (activity)
+            var time = TextView(activity)
             time.setTextColor(Color.BLACK)
             time.text = "$startTime to $endTime"
 
@@ -324,7 +343,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun populateReminder () {
+    private fun populateReminder() {
         var pastReminder = RelativeLayout(activity)
         var counter = 0
         root.reminders_group.removeAllViews()
@@ -333,22 +352,28 @@ class HomeFragment : Fragment() {
             val reminderCard = LinearLayout(activity)
             reminderCard.orientation = LinearLayout.VERTICAL
             reminderCard.id = counter
-            var params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            var params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             params.setMargins(15, 30, 15, 0)
             reminderCard.layoutParams = params
             reminderCard.setBackgroundColor(Color.WHITE)
 
             // Creating the Columns for the Text
             var llColumn = LinearLayout(activity)
-            var colParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            var colParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             llColumn.orientation = LinearLayout.HORIZONTAL
 
             var leftColumn = LinearLayout(activity)
             var rightColumn = LinearLayout(activity)
-            val llColumnParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            val llColumnParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             llColumnParams.setMargins(10, 0, 10, 0)
             leftColumn.layoutParams = llColumnParams
             rightColumn.layoutParams = llColumnParams
@@ -377,7 +402,7 @@ class HomeFragment : Fragment() {
             val dateStart = dateFormatter.parse(startTime)
             val timeFormatter = SimpleDateFormat("h:mm a")
             startTime = timeFormatter.format(dateStart)
-            var time = TextView (activity)
+            var time = TextView(activity)
             time.setTextColor(Color.BLACK)
             time.text = startTime
 
@@ -421,18 +446,18 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun populateWeather () {
+    private fun populateWeather() {
         val currentWeather = weatherViewModel.getWeather()?.currently
         root.weather_conditions.text = currentWeather?.summary
-        root.weather_temperature.text = currentWeather?.temperature?.toInt().toString() +"°C"
-        root.weather_humidity.text = "Humidity "+ currentWeather?.humidity.toString()
-        if(currentWeather?.precipType != null){
+        root.weather_temperature.text = currentWeather?.temperature?.toInt().toString() + "°C"
+        root.weather_humidity.text = "Humidity " + currentWeather?.humidity.toString()
+        if (currentWeather?.precipType != null) {
             root.weather_precip.text = currentWeather.precipType.toString().toUpperCase()
-        }else{
+        } else {
             root.weather_precip.text = ""
         }
 
-        if(currentWeather?.icon != null){
+        if (currentWeather?.icon != null) {
             when (currentWeather.icon) {
                 "clear-day" -> root.weather_icon.setImageResource(R.drawable.sun_96)
                 "clear-night" -> root.weather_icon.setImageResource(R.drawable.moon_96)
@@ -454,10 +479,11 @@ class HomeFragment : Fragment() {
     private fun populateOrganization() {
         val newOrganization = organizationViewModel.getorganization()
         root.organisation_name.text = newOrganization?.name
-        root.organisation_city.text = newOrganization?.city+","
-        root.organisation_street.text = newOrganization?.street_address+","
-        root.organisation_province.text = newOrganization?.province_state+","
+        root.organisation_city.text = newOrganization?.city + ","
+        root.organisation_street.text = newOrganization?.street_address + ","
+        root.organisation_province.text = newOrganization?.province_state + ","
         root.organisation_zip.text = newOrganization?.zip
     }
 }
+
 private const val TAG = "HomeFragment"

@@ -9,9 +9,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.capstone.R
 import com.capstone.api.Retrofit2Client
@@ -33,6 +35,8 @@ import java.util.*
 
 
 internal class CapService : Service() {
+    private val runningAndroidQOrLater =
+        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
     fun checkPermissions(activity: Activity): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(
@@ -144,8 +148,7 @@ internal class CapService : Service() {
                         alarmT
                     )
                 displayNotificationLater(displayNotification, mContext)
-            }
-            else{
+            } else {
                 Log.d(TAG, "Past Start Time @$start event notification not created")
             }
         }
@@ -170,8 +173,7 @@ internal class CapService : Service() {
                         alarmT
                     )
                 displayNotificationLater(displayNotification, mContext)
-            }
-            else{
+            } else {
                 Log.d(TAG, "Past Start Time @$start reminder notification not created")
             }
         }
@@ -240,7 +242,7 @@ internal class CapService : Service() {
                     call: Call<OrganizationResponse>?,
                     response: Response<OrganizationResponse>
                 ) {
-                    Log.d(TAG, "Successful user org call: "+ response)
+                    Log.d(TAG, "Successful user org call: " + response)
 
                     // check to make sure that it was a successful return to server
                     if (response.code() == 200) {
@@ -262,23 +264,66 @@ internal class CapService : Service() {
 
     }
 
-    fun getLocationFromAddress(strAddress: String, context: Context ): GeoPoint? {
+    fun getLocationFromAddress(strAddress: String, context: Context): GeoPoint? {
 
         val geocoder = Geocoder(context)
-        val addresses:List<Address>
-        addresses = geocoder.getFromLocationName(strAddress,1)
+        val addresses: List<Address>
+        addresses = geocoder.getFromLocationName(strAddress, 1)
 
-        if (addresses.isNotEmpty())
-        {
+        if (addresses.isNotEmpty()) {
             val latitude = addresses[0].latitude
             val longitude = addresses[0].longitude
             return GeoPoint(
-                 latitude ,
-                 longitude
-             )
+                latitude,
+                longitude
+            )
         }
         return null
     }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun checkPermissionsLocation(activity: Activity, context: Context) {
+        if (locationPermissionApproved(context)) {
+            return
+        }
+        // request permission
+        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+
+        val resultCode = when {
+            runningAndroidQOrLater -> {
+                permissionsArray += Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
+            }
+            else -> REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+        }
+
+        Log.d(TAG, "Request foreground only location permission")
+        ActivityCompat.requestPermissions(
+            activity,
+            permissionsArray,
+            resultCode
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun locationPermissionApproved(context: Context): Boolean {
+        val fgPermission = (PackageManager.PERMISSION_GRANTED ==
+                ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ))
+        val bgPermission =
+            if (runningAndroidQOrLater) {
+                PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+                    this, Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                )
+            } else {
+                true
+            }
+        return fgPermission && bgPermission
+    }
 }
 
+private const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 33
+private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
 private const val TAG = "CapService"
