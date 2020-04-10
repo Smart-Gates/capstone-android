@@ -63,6 +63,7 @@ class HomeFragment : Fragment() {
         reminderRequest()
         weatherRequest()
         organizationRequest()
+        CapService().getEventReminders(context!!)
 
         root.btn_weather.setOnClickListener {
             val intent = Intent(activity, WeatherActivity::class.java)
@@ -88,6 +89,7 @@ class HomeFragment : Fragment() {
         eventRequest()
         reminderRequest()
         weatherRequest()
+        CapService().getEventReminders(context!!)
     }
 
     private fun initViewModels() {
